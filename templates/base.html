@@ -11,5 +11,20 @@
       crossorigin="anonymous"
     ></script>
   </head>
-  <body></body>
+  <body>
+    {{ block_start_string }}
+    <h1>CPM</h1>
+    <input type="text" name="upload-img" value="" />
+    <div>
+      <button
+        hx-post="/upload"
+        hx-trigger="click"
+        hx-target="#parent-div"
+        hx-swap="innerHTML"
+      >
+        Upload file
+      </button>
+    </div>
+    {{ block_end_string }}
+  </body>
 </html>
