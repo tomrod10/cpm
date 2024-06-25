@@ -4,6 +4,9 @@ from flask import Flask, render_template
 def create_app():
     app = Flask("CPM", instance_relative_config=True)
 
+    # maximum file size 25 MB
+    app.config['MAX_CONTENT_LENGTH'] = 25 * 1024 * 1024
+
     if __name__ == "__main__":
         app.run()
 
