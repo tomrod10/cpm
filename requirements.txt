@@ -1,3 +1,4 @@
 Flask
-PIL or Pillow
+python-dotenv
+PIL 
 selenium==4.21.0

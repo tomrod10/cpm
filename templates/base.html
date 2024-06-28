@@ -15,7 +15,7 @@
     <section>
       <span>Upload your image file to generate a color palette!</span>
       <div>
-        <form method="post">
+        <form method="post" action="/upload" enctype="multipart/form-data">
           <input type="file" id="myFile" name="file" accept=".png, .jpg, .jpeg">
           <input type="submit">
         </form>
