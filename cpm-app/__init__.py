@@ -7,8 +7,6 @@ def create_app():
     app = Flask("CPM", instance_relative_config=True)
 
     # maximum file size 25 MB
-    app.config["MAX_CONTENT_LENGTH"] = 25 * 1024 * 1024
-
     app.config.from_mapping(
         SECRET_KEY=os.getenv("SECRET_KEY"), MAX_CONTENT_LENGTH=25 * 1024 * 1024
     )
