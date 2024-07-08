@@ -1,5 +1,5 @@
-import secrets
-from PIL import Image
+import io
+from PIL import Image, UnidentifiedImageError
 from flask import flash, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
 
@@ -11,7 +11,6 @@ def register_routes(app):
 
     @app.route("/upload", methods=["GET", "POST"])
     def upload_image_file():
-        error = None
         if request.method == "POST":
             # check if file is in request.files
             if "file" not in request.files:
@@ -28,18 +27,24 @@ def register_routes(app):
             if file:
                 filename = secure_filename(file.filename)
                 flash(f"{filename}")
-                unique_filename = f"{secrets.token_hex(8)}_{filename}"
 
-                # check it's a valid image with Pillow
                 try:
-                    img = Image.open(filename)
+                    # check it's a valid image with Pillow
+                    img = Image.open(file.stream)
                     img.verify()
+                    # TODO: extract this to util func ---
+                    img_data = img.getdata()
+                    img_without_exif = Image.new(img.mode, img.size)
+                    img_without_exif.putdata(img_data)
+                    # ---
+                    # save img data in memory buffer
+                    byte_arr = io.BytesIO()
+                    img_without_exif.save(byte_arr, format=img_without_exif.format)
+                    byte_arr.seek(0)
                 except FileNotFoundError:
                     flash("Image file not found")
-                except PIL.UnidentifiedImageError as e:
+                except UnidentifiedImageError as e:
                     flash(f"{e}")
-
-                # strip metadata from image file
                 else:
                     img.close()
 
@@ -49,7 +54,9 @@ def register_routes(app):
 
             # TODO: check to see if I can call generate_color_palette
             # after all these steps instead of having the user click "generate"
-            return render_template("upload.html")
+            file_name = file.filename
+            image_data = Image.open(file_name).load()
+            return render_template("upload.html", image_data=image_data, image=file)
 
     @app.route("/generate", methods=["GET", "POST"])
     def generate_color_palette():

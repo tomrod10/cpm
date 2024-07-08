@@ -17,5 +17,6 @@ def create_app():
     from . import views
 
     views.register_routes(app)
+    app.add_url_rule(rule="/", endpoint="index")
 
     return app
