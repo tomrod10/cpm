@@ -31,7 +31,9 @@ def upload_image_file():
 
             try:
                 # check it's a valid image with Pillow
-                img = Image.open(file.stream)
+                img = Image.open(io.BytesIO(file.stream.read()))
+                # TODO: Figure out how FileStorage works.
+                img.show()
                 img.verify()
                 # TODO: extract this to util func ---
                 img_data = img.getdata()
