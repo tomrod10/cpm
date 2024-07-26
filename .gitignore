@@ -1,4 +1,4 @@
 .git
 .env
 venv/
-cpm-app/__pycache__/
+cpm_app/__pycache__/
