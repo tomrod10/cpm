@@ -2,5 +2,6 @@
 
 {% block content %}
 <label for="image">Image uploaded</label>
-<img src={{image_data}} alt={{image.filename}}>
+<div>{{image_data}}</div>
+<img src={{image_data | safe }} alt={{image.filename}}>
 {% endblock %}

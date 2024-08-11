@@ -35,9 +35,10 @@ def upload_image_file():
             img.verify()
             img_without_meta = remove_metadata(img)
             img_str = img_to_base64(img_without_meta, img.format)
-            print(img_str, file=sys.stdout)
-            print(img_str, file=sys.stderr)
-            return render_template("upload.html", image_data=img_str, image=file)
+            # print(img_str, file=sys.stderr)
+            return render_template(
+                "upload.html", image_data=img_str, image=file, fmt=img.format
+            )
         except FileNotFoundError:
             flash("Image file not found")
         except UnidentifiedImageError as e:

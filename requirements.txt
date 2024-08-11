@@ -1,4 +1,4 @@
 Flask
 python-dotenv
-PIL 
-selenium==4.21.0
+Pillow 
+selenium == 4.21.0
