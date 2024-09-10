@@ -1,0 +1,11 @@
+[project]
+name = "cpm_app"
+version = "0.0.1"
+description = "Image based color palette generator"
+dependencies = [
+    "flask",
+]
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
