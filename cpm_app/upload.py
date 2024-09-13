@@ -1,5 +1,4 @@
 import io
-import sys
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from PIL import Image, UnidentifiedImageError
