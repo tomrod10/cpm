@@ -2,4 +2,3 @@
 .env
 venv/
 cpm_app/__pycache__/
-Dockerfile
