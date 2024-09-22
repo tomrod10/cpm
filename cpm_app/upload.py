@@ -1,4 +1,5 @@
 import io
+import sys
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from PIL import Image, UnidentifiedImageError
@@ -29,10 +30,11 @@ def upload_image_file():
 
         try:
             # check it's a valid image with Pillow
-            img = Image.open(io.BytesIO(file.stream.read()))
-            img.show()
-            img.verify()
-            img_without_meta = remove_metadata(img)
+            buffer = Image.open(io.BytesIO(file.stream.read()))
+            buffer.seek(0)
+            buffer.verify()
+            # img.show()
+            img_without_meta = remove_metadata(buffer)
             img_str = img_to_base64(img_without_meta, img.format)
             # print(img_str, file=sys.stderr)
             return render_template(
