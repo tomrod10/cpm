@@ -30,15 +30,16 @@ def upload_image_file():
 
         try:
             # check it's a valid image with Pillow
-            buffer = Image.open(io.BytesIO(file.stream.read()))
+            buffer = io.BytesIO(file.stream.read())
             buffer.seek(0)
-            buffer.verify()
-            # img.show()
-            img_without_meta = remove_metadata(buffer)
-            img_str = img_to_base64(img_without_meta, img.format)
-            # print(img_str, file=sys.stderr)
+            print(buffer.getvalue(), file=sys.stdout)
+            image = Image.frombytes("RGBA", (128, 128), buffer.getvalue(), "raw")
+            image.verify()
+            image.show()
+            img_without_meta = remove_metadata(image)
+            img_str = img_to_base64(img_without_meta, image.format)
             return render_template(
-                "upload.html", image_data=img_str, image=file, fmt=img.format
+                "upload.html", image_data=img_str, image=file, fmt=image.format
             )
         except FileNotFoundError:
             flash("Image file not found")
