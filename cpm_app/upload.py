@@ -1,8 +1,12 @@
-import io
 import sys
+import hashlib
+import datetime
+import magic
+import mimetypes
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from PIL import Image, UnidentifiedImageError
+from werkzeug.utils import secure_filename
 
 from cpm_app.utils import img_to_base64, remove_metadata
 
@@ -23,23 +27,37 @@ def upload_image_file():
             return redirect(url_for("index"))
 
         file = request.files["file"]
+        safe_filename = ""
+        if file:
+            safe_filename = (
+                secure_filename(file.filename)
+                + hashlib.shake_128(safe_filename.encode()).hexdigest(5)
+                + str(datetime.datetime.today())
+            )
+            print(safe_filename)
+
+        # check MIME type is in (JPG, JPEG, PNG)
+        mime = magic.from_buffer(file.read(), mime=True)
+        ext = mimetypes.guess_extension(mime)
+        if ext not in (".jpg", ".png", ".jpeg"):  # is PIL.Image.format better?
+            raise ValueError("Invalid file type uploaded")
+
+        # create new image
+        # use safe_filename
+        # remove EXIF / metadata - Image.Exif class
+        # convert to 24bit lossless PNG
+        # save under temp/ dir
+        # open and display image for debugging
+
         # check for filename
-        if not file.filename:
+        if not safe_filename:
             flash("No file selected")
             return "<h1>No file selected or found</h1>"
+        print(secure_filename(file.filename), file=sys.stdout)
 
         try:
-            # check it's a valid image with Pillow
-            buffer = io.BytesIO(file.stream.read())
-            buffer.seek(0)
-            print(buffer.getvalue(), file=sys.stdout)
-            image = Image.frombytes("RGBA", (128, 128), buffer.getvalue(), "raw")
-            image.verify()
-            image.show()
-            img_without_meta = remove_metadata(image)
-            img_str = img_to_base64(img_without_meta, image.format)
             return render_template(
-                "upload.html", image_data=img_str, image=file, fmt=image.format
+                "upload.html", image_data=image, name=file.filename, fmt=image.format
             )
         except FileNotFoundError:
             flash("Image file not found")
