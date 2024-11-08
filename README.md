@@ -1,9 +1,9 @@
-#CPM - Color Palette Maker
+# CPM - Color Palette Maker
 
-##Summary
+## Summary
 CPM is an image based color palette generator CLI tool that can return color schemes in Hex and RGB. It will use various algorithms to generate different color schemes (monochromatic, analogous, complementary, split complementary, triadic, square, and rectangle (or tetradic).
 
-##Main Features
+## Main Features
 - Image upload and processing
 - Color palette generation in Hex and RGB
 - Color palette generation in different color schemes
@@ -22,7 +22,7 @@ CPM is an image based color palette generator CLI tool that can return color sch
 - Share color palette feature via (link)
     - It would be nice to generate and display a thumbnail when the link is pasted somewhere
 
-##Tech
+## Tech
 
 **Language:** Python
 
