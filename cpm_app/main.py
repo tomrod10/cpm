@@ -1,14 +1,14 @@
 import os
 import sys
 
-from cpm_flow import flow
+from cli_flow.flow import interactive_flow
 
 
 from PIL import Image, UnidentifiedImageError
 def main():
     while True:
         # if user invokes CPM interactive flow
-        flow.interactive_flow()
+        interactive_flow()
 
         # if user sends direct command
         # flow.direct()
