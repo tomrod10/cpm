@@ -13,6 +13,7 @@ def main():
         # if user sends direct command
         # flow.direct()
 
+        # TODO: move this to only be accesible from the interactive flow
         retry = input("Would you like to generate another color palette? (y/n): ")
         if retry == "y":
             continue
