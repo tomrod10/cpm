@@ -1,6 +1,5 @@
 import os
 import magic
-import mimetypes
 
 from typing import Union
 
@@ -10,7 +9,7 @@ def get_user_file(valid_exts: list[str]) -> str:
         if not len(file_name) or not os.path.isfile(file_name):
             print("[Filename not found or invalid! Try again]")
             continue
-        ext = mimetypes.guess_extension(magic.from_file(file_name, mime=True))
+        ext = magic.from_file(file_name, mime=True)
         if ext not in valid_exts:
             print("[Invalid file extension! Try another]")
             continue
