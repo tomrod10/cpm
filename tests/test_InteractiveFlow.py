@@ -61,7 +61,7 @@ class TestGetColorFormat(unittest.TestCase):
         mock_input.assert_called_once()
 
     @patch("builtins.input")
-    def test_get_both_schemes(self, mock_print, mock_input):
+    def test_get_both_schemes(self, mock_input):
         mock_input.return_value = ""
         result = get_color_format(["r", "h", ""])
         self.assertEqual(result, "rh")
