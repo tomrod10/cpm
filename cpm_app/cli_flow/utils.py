@@ -35,13 +35,10 @@ def get_color_format(color_formats: list[str]) -> str:
         break
 
     if color_format == "r":
-        print("rgb")
         return "r"
     elif color_format == "h":
-        print("hsl")
         return "h"
     elif not color_format:
-        print("rgb and hsl")
         return "rh"
     else:
         raise ValueError(f"[Color format {color_format} is invalid!]")

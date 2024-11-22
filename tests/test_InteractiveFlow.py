@@ -38,30 +38,29 @@ class TestGetUserFile(unittest.TestCase):
 
 class TestGetColorScheme(unittest.TestCase):
     @patch("builtins.input")
-    def test_get_hsl_scheme(self, mock_input):
+    def test_get_mono_scheme(self, mock_input):
         mock_input.return_value = "mono"
-        valid_color_schemes = ["mono", "alog", "comp", "scomp"]
-        result = get_color_scheme(valid_color_schemes)
+        result = get_color_scheme(["mono", "alog", "comp", "scomp"])
         self.assertEqual(result, "mono")
         mock_input.assert_called_once()
 
 class TestGetColorFormat(unittest.TestCase):
     @patch("builtins.input")
-    def test_get_rgb_scheme(self, mock_input):
+    def test_get_rgb_format(self, mock_input):
         mock_input.return_value = "r"
-        result = get_color_scheme(["r", "h", ""])
+        result = get_color_format(["r", "h", ""])
         self.assertEqual(result, "r")
         mock_input.assert_called_once()
 
     @patch("builtins.input")
-    def test_get_hsl_scheme(self, mock_input):
+    def test_get_hsl_format(self, mock_input):
         mock_input.return_value = "h"
-        result = get_color_scheme(["r", "h", ""])
+        result = get_color_format(["r", "h", ""])
         self.assertEqual(result, "h")
         mock_input.assert_called_once()
 
     @patch("builtins.input")
-    def test_get_both_schemes(self, mock_input):
+    def test_get_both_formats(self, mock_input):
         mock_input.return_value = ""
         result = get_color_format(["r", "h", ""])
         self.assertEqual(result, "rh")
