@@ -1,7 +1,9 @@
 import os
 import magic
+import mimetypes
 
 from typing import Union
+
 
 def get_user_file(valid_exts: list[str]) -> str:
     while True:
@@ -9,11 +11,12 @@ def get_user_file(valid_exts: list[str]) -> str:
         if not len(file_name) or not os.path.isfile(file_name):
             print("[Filename not found or invalid! Try again]")
             continue
-        ext = magic.from_file(file_name, mime=True)
+        ext = mimetypes.guess_extension(magic.from_file(file_name, mime=True))
         if ext not in valid_exts:
             print("[Invalid file extension! Try another]")
             continue
         return file_name
+
 
 def get_color_scheme(color_schemes: list[str]) -> str:
     while True:
@@ -22,6 +25,7 @@ def get_color_scheme(color_schemes: list[str]) -> str:
             print("[Invalid color scheme! Try again]")
             continue
         return color_scheme
+
 
 def get_color_format(color_formats: list[str]) -> str:
     while True:
@@ -42,6 +46,7 @@ def get_color_format(color_formats: list[str]) -> str:
         return "rh"
     else:
         raise ValueError(f"[Color format {color_format} is invalid!]")
+
 
 # TODO: Write function to generate color palette
 def generate_color_palette(cs: str, cf: str) -> Union[list[tuple], list[str]]:
