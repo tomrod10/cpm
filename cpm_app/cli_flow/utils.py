@@ -1,7 +1,6 @@
 import os
 import magic
 import mimetypes
-
 from typing import Union
 
 

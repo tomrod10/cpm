@@ -1,7 +1,5 @@
 import unittest
 from unittest.mock import patch
-
-
 from cpm_app.cli_flow.utils import get_user_file
 
 
@@ -25,10 +23,10 @@ class TestGetUserFile(unittest.TestCase):
         mock_guess_extension.return_value = ".png"
 
         # Mocking magic.from_file to return "image/png" for .png files
-        mock_magic.return_value = "image/png"  # or whatever magic returns for .png
+        mock_magic.return_value = "image/png"
 
         # Valid extensions to pass
-        valid_exts = [".png", ".jpg"]
+        valid_exts = [".png", ".jpg", "jpeg"]
 
         # Call the function
         result = get_user_file(valid_exts)
@@ -47,9 +45,3 @@ class TestGetUserFile(unittest.TestCase):
 
         # Ensure magic.from_file was called with the correct file name
         mock_magic.assert_called_once_with("valid_image.png", mime=True)
-
-
-    # @patch("builtins.input")
-    # @patch("os.path.isfile")
-    # def test_invalid_file():
-    #     ...
