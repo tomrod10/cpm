@@ -1,4 +1,6 @@
 .git
 .env
 venv/
-cpm_app/__pycache__/
+__pycache__
+.ropeproject/
+.mypy_cache

@@ -1,28 +1,26 @@
 import os
 import sys
-import magic
-import mimetypes
-import platform
+
+from cli_flow.flow import interactive_flow
+
 
 from PIL import Image, UnidentifiedImageError
-
 def main():
-    device_os = platform.system()
-    print(f"OS: [{device_os}]")
-    print(f"Current directory: {os.getcwd()}")
-
     while True:
-        try:
-            file_name = input("Enter name of the file you wish to generate a palette from: ")
-            image = Image.open(file_name)
+        # if user invokes CPM interactive flow
+        interactive_flow()
 
-            if not len(file_name):
-                raise ValueError("Invalid file path")
+        # if user sends direct command
+        # flow.direct()
 
-        except ValueError as e:
-            print(e, file=sys.stdout)
+        # TODO: move this to only be accesible from the interactive flow
+        retry = input("Would you like to generate another color palette? (y/n): ")
+        if retry == "y":
+            continue
+        else:
+            sys.exit("Stay creative, bye!")
 
-        sys.exit()
 
-if __name__ != "__main__":
+
+if __name__ == "__main__":
     main()
