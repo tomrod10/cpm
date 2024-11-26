@@ -4,12 +4,12 @@ from PIL import Image
 # maybe import for converting HSL to RGB to Hex
 
 
-def get_random_color_from_img(file):
+def get_random_color_from_img(file: str) -> tuple[float, float, float]:
     im = Image.open(file)
-    w, h = im.size
-    print(f"Size: W: {w}, H: {h}")
-    x = random.randint(0, w)
-    y = random.randint(0, h)
+    width, height = im.size
+    print(f"Size: W: {width}, H: {height}")
+    x = random.randint(0, width)
+    y = random.randint(0, height)
 
     print(f"Rand Coords: x: {x}, y: {y}")
     color_r = im.getpixel((x,y))
@@ -19,6 +19,13 @@ def get_random_color_from_img(file):
     print(f"abc: {r}, {g}, {b}")
     h, l, s = colorsys.rgb_to_hls(r, g, b)
     print(f"hsl: {h}, {l}, {s}")
+
+    r_im = Image.new(mode="RGB", size=(width, height), color=color_r)
+    # h_im = Image.new(mode="HSV", size=(w, h), color=(h, s, l))
+    r_im.show()
+    # h_im.show()
+
+    return (h, l, s)
 
 
 def main():
