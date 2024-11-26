@@ -17,15 +17,19 @@ def get_random_color_from_img(file: str) -> tuple[float, float, float]:
 
     (r, g, b) = color_r[0]/255.0, color_r[1]/255.0, color_r[2]/255.0
     print(f"abc: {r}, {g}, {b}")
-    h, l, s = colorsys.rgb_to_hls(r, g, b)
-    print(f"hsl: {h}, {l}, {s}")
+    # h, l, s = colorsys.rgb_to_hls(r, g, b)
+    # print(f"hsl: {h}, {l}, {s}")
+
+    h, s, v = colorsys.rgb_to_hsv(r, g, b)
+    h_int, s_int, v_int = int(h * 255), int(s * 255), int(v * 255)
 
     r_im = Image.new(mode="RGB", size=(width, height), color=color_r)
-    # h_im = Image.new(mode="HSV", size=(w, h), color=(h, s, l))
+    h_im = Image.new(mode="HSV", size=(width, height), color=(h_int, s_int, v_int))
     r_im.show()
-    # h_im.show()
+    h_im.show()
 
-    return (h, l, s)
+    # return (h, l, s)
+    return
 
 
 def main():
