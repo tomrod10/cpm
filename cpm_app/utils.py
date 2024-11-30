@@ -11,7 +11,7 @@ def get_color_from_img(file: str) -> tuple[float, float, float]:
         y = random.randint(0, height - 1)
         pixel_data = im.getpixel((x,y))
 
-    if isinstance(pixel_data, tuple):
+    if isinstance(pixel_data, tuple) and len(pixel_data) == 3:
         r, g, b = pixel_data[0]/255.0, pixel_data[1]/255.0, pixel_data[2]/255.0
         h, l, s = colorsys.rgb_to_hls(r, g, b)
         return (h, l, s)
