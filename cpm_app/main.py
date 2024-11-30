@@ -1,10 +1,9 @@
 import os
 import sys
-
 from cli_flow.flow import interactive_flow
-
-
 from PIL import Image, UnidentifiedImageError
+
+
 def main():
     while True:
         # if user invokes CPM interactive flow

@@ -4,3 +4,4 @@ venv/
 __pycache__
 .ropeproject/
 .mypy_cache
+.pytest_cache

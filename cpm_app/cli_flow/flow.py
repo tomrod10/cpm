@@ -1,6 +1,6 @@
 import sys
-
 from cli_flow.utils import get_color_format, get_user_file, get_color_scheme
+
 
 def interactive_flow():
     valid_exts = [".jpg", ".jpeg", ".png"]
@@ -18,7 +18,7 @@ def interactive_flow():
         print(f"File: {file_name}")
         print(f"Color Scheme: {color_scheme}")
         print(f"Color Format: {color_format}")
-        print(f"Generated color palette: <rgb and/or hsl values> <colored squares> ")
+        print("Color palette: <rgb and/or hsl values> <colored squares>")
 
 
     except ValueError as e:

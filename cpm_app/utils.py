@@ -1,9 +1,10 @@
 import random
 import colorsys
 from PIL import Image
+from typing import Union
 
 
-def get_random_color_from_img(file: str) -> tuple[float, float, float]:
+def get_color_from_img(file: str) -> Union[tuple[float, float, float], float]:
     im = Image.open(file)
     width, height = im.size
     x = random.randint(0, width - 1)
@@ -15,15 +16,15 @@ def get_random_color_from_img(file: str) -> tuple[float, float, float]:
         h, l, s = colorsys.rgb_to_hls(r, g, b)
         return (h, l, s)
     elif isinstance(pixel_data, int):
-        grs_1 = grs_2 = grs_3 = pixel_data / 255.0
-        return (grs_1, grs_2, grs_3)
+        grayscale = pixel_data / 255.0
+        return grayscale
     else:
         raise ValueError("Unsupported color format or image mode.")
 
 
 def main():
     fp = input("Enter file path: ")
-    get_random_color_from_img(fp)
+    get_color_from_img(fp)
 
 if __name__ == "__main__":
     main()
