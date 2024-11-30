@@ -1,5 +1,6 @@
 import sys
 from cli_flow.utils import get_color_format, get_user_file, get_color_scheme
+from cpm_app.utils import get_color_from_img
 
 
 def interactive_flow():
@@ -10,6 +11,7 @@ def interactive_flow():
         file_name = get_user_file(valid_exts)
         color_scheme = get_color_scheme(color_schemes)
         color_format = get_color_format(color_formats)
+        main_color = get_color_from_img(file_name)
         # TODO: Write function to generate color palette
             # generate_color_palette(cs: str, cf: str)
 
