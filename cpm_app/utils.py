@@ -1,5 +1,7 @@
 import random
 import colorsys
+from typing import Union
+from dataclasses import dataclass
 from PIL import Image
 
 
@@ -17,6 +19,35 @@ def get_color_from_img(file: str) -> tuple[float, float, float]:
         return (h, l, s)
     else:
         raise ValueError("Unsupported image mode or grayscale image detected. Only color images supported.")
+
+@dataclass
+class HLS:
+    hls_values: tuple[tuple[float, float, float],
+                        tuple[float, float, float],
+                        tuple[float, float, float],
+                        tuple[float, float, float],
+                        tuple[float, float, float]]
+
+@dataclass
+class RGB:
+    rgb_values: tuple[tuple[int, int, int],
+                        tuple[int, int, int],
+                        tuple[int, int, int],
+                        tuple[int, int, int],
+                        tuple[int, int, int]]
+
+def make_monochromatic_color_palette(hls: tuple, **kwargs) -> Union[HLS, RGB, dict[HLS, RGB]]: #WIP
+    if True:
+
+        return HLS(((0.2,0.2,0.2),
+                    (0.2,0.2,0.2),
+                    (0.2,0.2,0.2),
+                    (0.2,0.2,0.2),
+                    (0.2,0.2,0.2)))
+
+# Union[HLS, RGB, dict[HLS, RGB]]
+
+
 
 
 def main():
