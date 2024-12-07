@@ -1,11 +1,10 @@
 import random
 import colorsys
-from typing import Union
-from dataclasses import dataclass
 from PIL import Image
+from typing import Union, List, Tuple
 
 
-def get_color_from_img(file: str) -> tuple[float, float, float]:
+def get_color_from_img(file: str) -> Tuple[float, float, float]:
     with Image.open(file) as im:
         im = im.convert("RGB")
         width, height = im.size
@@ -20,30 +19,73 @@ def get_color_from_img(file: str) -> tuple[float, float, float]:
     else:
         raise ValueError("Unsupported image mode or grayscale image detected. Only color images supported.")
 
-@dataclass
-class HLS:
-    hls_values: tuple[tuple[float, float, float],
-                        tuple[float, float, float],
-                        tuple[float, float, float],
-                        tuple[float, float, float],
-                        tuple[float, float, float]]
+# ColorPalette = List[Tuple[Union[float, int], Union[float, int], Union[float, int]]]
+ColorPalette = List[int]
 
-@dataclass
-class RGB:
-    rgb_values: tuple[tuple[int, int, int],
-                        tuple[int, int, int],
-                        tuple[int, int, int],
-                        tuple[int, int, int],
-                        tuple[int, int, int]]
+# Union[ColorPalette, dict[str, ColorPalette]
+def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: str) -> ColorPalette: #WIP
+    # Hue: Change 2 between 1 - 3 points
+    # Light: Increment each 8 to 13 points | Dark to Light == Low to High
+    # Sat: Vary +- 5 to 15 point of any 2
+    # holds 5 lists containing HLS values
 
-def make_monochromatic_color_palette(hls: tuple, **kwargs) -> Union[HLS, RGB, dict[HLS, RGB]]: #WIP
-    if True:
+    steps = 5
+    hls_cp = list()
+    h, l, s = hls
 
-        return HLS(((0.2,0.2,0.2),
-                    (0.2,0.2,0.2),
-                    (0.2,0.2,0.2),
-                    (0.2,0.2,0.2),
-                    (0.2,0.2,0.2)))
+    if format == "h":
+        new_h = h
+        new_l = 0
+        new_s = s
+
+        for i in range(steps):
+            print(f"LOOP -> h: {h}, l: {l}, s: {s} | new_h: {new_h}, new_l: {new_l}, new_s: {new_s}")
+            # Remember h, l and s are float type / a value between 0 and 1 (exclusive)
+            if i == 0 or i == 4:
+                variation = random.randrange(1, 3) # Fix for float
+                if h + variation > 100:
+                    new_h = h - variation
+                else:
+                    new_h = h + variation
+
+            if i == 1 or i == 3:
+                variation = random.randrange(5, 25) # Fix for float
+                if s + variation > 100:
+                    new_s = s - variation
+                else:
+                    new_s = s + variation
+
+            new_l += random.randrange(8, 35) # Fix for float
+
+            # convert back to RGB
+            r, g, b = colorsys.hls_to_rgb(new_h, new_l, new_s)
+
+            hls_cp.append([int(r), int(g), int(b)])
+
+        return hls_cp
+
+    # elif format == "r":
+    #     return [(2,2,2),
+    #             (2,2,2),
+    #             (2,2,2),
+    #             (2,2,2),
+    #             (2,2,2)]
+    # elif format == "":
+    #     formats = {
+    #         "hls_values": [(0.2,0.2,0.2),
+    #                     (0.2,0.2,0.2),
+    #                     (0.2,0.2,0.2),
+    #                     (0.2,0.2,0.2),
+    #                     (0.2,0.2,0.2)],
+    #         "rgb_values": [(2,2,2),
+    #                     (2,2,2),
+    #                     (2,2,2),
+    #                     (2,2,2),
+    #                     (2,2,2)]
+    #     }
+    #     return formats
+    else:
+        raise Exception("Unsupported color format")
 
 # Union[HLS, RGB, dict[HLS, RGB]]
 
