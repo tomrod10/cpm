@@ -22,6 +22,7 @@ def get_color_from_img(file: str) -> Tuple[float, float, float]:
 # ColorPalette = List[Tuple[Union[float, int], Union[float, int], Union[float, int]]]
 ColorPalette = List[int]
 
+# TODO: Write a docstring explaining this function and how we are calculcating steps
 # Union[ColorPalette, dict[str, ColorPalette]
 def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: str) -> ColorPalette: #WIP
     # Hue: Change 2 between 1 - 3 points
@@ -35,32 +36,36 @@ def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: st
 
     if format == "h":
         new_h = h
-        new_l = 0
+        new_l = 0.0
         new_s = s
 
+        SINGLE_UNIT = 0.00990099 # Equivalent to single unit (1) in the 0 - 100 range
+        RANGE_CEIL = 0.9999999999999999  # Equivalent to 100 in the 0 - 100 range
         for i in range(steps):
-            print(f"LOOP -> h: {h}, l: {l}, s: {s} | new_h: {new_h}, new_l: {new_l}, new_s: {new_s}")
-            # Remember h, l and s are float type / a value between 0 and 1 (exclusive)
+            # Remember h, l and s are float type fix below
             if i == 0 or i == 4:
-                variation = random.randrange(1, 3) # Fix for float
-                if h + variation > 100:
+                # Fix for float
+                variation = random.uniform(SINGLE_UNIT, (SINGLE_UNIT * 3.0)) # between 1 - 3 in in range of 0 - 100
+                if h + variation > RANGE_CEIL:
                     new_h = h - variation
                 else:
                     new_h = h + variation
 
             if i == 1 or i == 3:
-                variation = random.randrange(5, 25) # Fix for float
-                if s + variation > 100:
+                variation = random.uniform((SINGLE_UNIT * 5), (SINGLE_UNIT * 25)) # between 5 - 25 in in range of 0 - 100
+                if s + variation > RANGE_CEIL:
                     new_s = s - variation
                 else:
                     new_s = s + variation
 
-            new_l += random.randrange(8, 35) # Fix for float
+            new_l += random.uniform((SINGLE_UNIT * 8), (SINGLE_UNIT * 35)) # between 8 - 35 in in range of 0 - 100
 
+            print(f"LOOP -> h: {h}, l: {l}, s: {s} | new_h: {new_h}, new_l: {new_l}, new_s: {new_s}")
             # convert back to RGB
+            print(f"LOOP -> new_h: {new_h}, new_l: {new_l}, new_s: {new_s}")
             r, g, b = colorsys.hls_to_rgb(new_h, new_l, new_s)
 
-            hls_cp.append([int(r), int(g), int(b)])
+            hls_cp.append([int(r * 255), int(g * 255), int(b * 255)])
 
         return hls_cp
 
