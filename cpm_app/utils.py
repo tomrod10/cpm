@@ -42,7 +42,6 @@ def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: st
         SINGLE_UNIT = 0.00990099 # Equivalent to single unit (1) in the 0 - 100 range
         RANGE_CEIL = 0.9999999999999999  # Equivalent to 100 in the 0 - 100 range
         for i in range(steps):
-            # Remember h, l and s are float type fix below
             if i == 0 or i == 4:
                 # Fix for float
                 variation = random.uniform(SINGLE_UNIT, (SINGLE_UNIT * 3.0)) # between 1 - 3 in in range of 0 - 100
@@ -52,15 +51,15 @@ def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: st
                     new_h = h + variation
 
             if i == 1 or i == 3:
-                variation = random.uniform((SINGLE_UNIT * 5), (SINGLE_UNIT * 25)) # between 5 - 25 in in range of 0 - 100
+                variation = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0)) # between 5 - 25 in in range of 0 - 100
                 if s + variation > RANGE_CEIL:
                     new_s = s - variation
                 else:
                     new_s = s + variation
 
-            new_l += random.uniform((SINGLE_UNIT * 8), (SINGLE_UNIT * 35)) # between 8 - 35 in in range of 0 - 100
+            new_l += random.uniform((SINGLE_UNIT * 8.0), (SINGLE_UNIT * 20.0)) # between 8 - 20 in in range of 0 - 100
 
-            print(f"LOOP -> h: {h}, l: {l}, s: {s} | new_h: {new_h}, new_l: {new_l}, new_s: {new_s}")
+            # print(f"LOOP -> h: {h}, l: {l}, s: {s} | new_h: {new_h}, new_l: {new_l}, new_s: {new_s}")
             # convert back to RGB
             print(f"LOOP -> new_h: {new_h}, new_l: {new_l}, new_s: {new_s}")
             r, g, b = colorsys.hls_to_rgb(new_h, new_l, new_s)
