@@ -20,7 +20,7 @@ def get_color_from_img(file: str) -> Tuple[float, float, float]:
         raise ValueError("Unsupported image mode or grayscale image detected. Only color images supported.")
 
 # ColorPalette = List[Tuple[Union[float, int], Union[float, int], Union[float, int]]]
-ColorPalette = List[int]
+ColorPalette = List[List[int]]
 
 # TODO: Write a docstring explaining this function and how we are calculcating steps
 # Union[ColorPalette, dict[str, ColorPalette]
@@ -31,7 +31,7 @@ def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: st
     # holds 5 lists containing HLS values
 
     steps = 5
-    hls_cp = list()
+    hls_cp: ColorPalette = list()
     h, l, s = hls
 
     if format == "h":

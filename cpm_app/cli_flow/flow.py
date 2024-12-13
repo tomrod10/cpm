@@ -38,8 +38,6 @@ def interactive_flow():
             x0 += 200
             x1 += 200
         bg_im.show()
-        # mc_im = Image.new("RGB", (200, 200), int(main_color[0]))
-        # mc_im.show()
 
     except ValueError as e:
         print(e, file=sys.stdout)
