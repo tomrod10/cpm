@@ -1,7 +1,7 @@
 import random
 import colorsys
-from PIL import Image
-from typing import Union, List, Tuple
+from PIL import Image, ImageDraw
+from typing import List, Tuple, Dict, Union
 
 
 def get_color_from_img(file: str) -> Tuple[float, float, float]:
@@ -19,82 +19,73 @@ def get_color_from_img(file: str) -> Tuple[float, float, float]:
     else:
         raise ValueError("Unsupported image mode or grayscale image detected. Only color images supported.")
 
-# ColorPalette = List[Tuple[Union[float, int], Union[float, int], Union[float, int]]]
-ColorPalette = List[List[int]]
-
-# TODO: Write a docstring explaining this function and how we are calculcating steps
 # Union[ColorPalette, dict[str, ColorPalette]
-def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: str) -> ColorPalette: #WIP
-    # Hue: Change 2 between 1 - 3 points
-    # Light: Increment each 8 to 13 points | Dark to Light == Low to High
-    # Sat: Vary +- 5 to 15 point of any 2
-    # holds 5 lists containing HLS values
+ColorPalette = Dict[str, List[List[int]]]
+def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: str) -> Union[ColorPalette, List[List[int]]]: #WIP
+    """
+    Returns a 5-step monochromatic color palette in HLS, RGB or both color formats
 
+        Parameters:
+            hls (Tuple[float, float, float]): A tuple of floats that represents an HLS color
+            format (string): A string representing color format to return to user. 'h' for HLS, 'r' for RGB and None or 'b' for both HLS and RGB
+
+        Returns:
+            mono_cps (Dict[str, List[List[int]]]): A dict with a list containing lists of integers as the value for its keys
+    """
     steps = 5
-    hls_cp: ColorPalette = list()
+    # mono_cp = list()
+    mono_cps = {'h': [], 'r': []}
     h, l, s = hls
 
-    if format == "h":
+    if format in ("r", "h", "rh"):
         new_h = h
         new_l = 0.0
         new_s = s
 
-        SINGLE_UNIT = 0.00990099 # Equivalent to single unit (1) in the 0 - 100 range
+        SINGLE_UNIT = 0.00990099 # Equivalent to single unit in the 0 - 100 range
         SINGLE_HUE_UNIT = 0.0027777777 # Equivalent to single unit in the 0 - 360 range
-        RANGE_CEIL = 0.9999999999999999  # Equivalent to the max unit in the 0 - 100 range
+        RANGE_CEIL = 0.9999999999999999  # Equivalent to the max value in our float number range
         for i in range(steps):
             if i == 0 or i == 4:
-                # Fix: Double check if hue range in HLS format is from 0 - 360
-                variation = random.uniform(SINGLE_HUE_UNIT, (SINGLE_HUE_UNIT * 3.0)) # between 1 - 3 in in range of 0 - 100
+                variation = random.uniform(SINGLE_HUE_UNIT, (SINGLE_HUE_UNIT * 3.0))
                 if h + variation > RANGE_CEIL:
                     new_h = h - variation
                 else:
                     new_h = h + variation
 
             if i == 1 or i == 3:
-                variation = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0)) # between 5 - 25 in in range of 0 - 100
+                variation = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0))
                 if s + variation > RANGE_CEIL:
                     new_s = s - variation
                 else:
                     new_s = s + variation
 
-            new_l += random.uniform((SINGLE_UNIT * 8.0), (SINGLE_UNIT * 20.0)) # between 8 - 20 in in range of 0 - 100
+            new_l += random.uniform((SINGLE_UNIT * 8.0), (SINGLE_UNIT * 20.0))
 
-            # print(f"LOOP -> h: {h}, l: {l}, s: {s} | new_h: {new_h}, new_l: {new_l}, new_s: {new_s}")
+            mono_cps['h'].append([int(new_h * 360), int(new_l * 100), int(new_s * 100)])
             # convert back to RGB
-            print(f"LOOP -> new_h: {new_h}, new_l: {new_l}, new_s: {new_s}")
             r, g, b = colorsys.hls_to_rgb(new_h, new_l, new_s)
+            mono_cps['r'].append([int(r * 255), int(g * 255), int(b * 255)])
 
-            hls_cp.append([int(r * 255), int(g * 255), int(b * 255)])
+        if format in ('r', 'h'):
+            return mono_cps['r']
 
-        return hls_cp
-
-    # elif format == "r":
-    #     return [(2,2,2),
-    #             (2,2,2),
-    #             (2,2,2),
-    #             (2,2,2),
-    #             (2,2,2)]
-    # elif format == "":
-    #     formats = {
-    #         "hls_values": [(0.2,0.2,0.2),
-    #                     (0.2,0.2,0.2),
-    #                     (0.2,0.2,0.2),
-    #                     (0.2,0.2,0.2),
-    #                     (0.2,0.2,0.2)],
-    #         "rgb_values": [(2,2,2),
-    #                     (2,2,2),
-    #                     (2,2,2),
-    #                     (2,2,2),
-    #                     (2,2,2)]
-    #     }
-    #     return formats
+        return mono_cps
     else:
         raise Exception("Unsupported color format")
 
-# Union[HLS, RGB, dict[HLS, RGB]]
 
+def draw_color_palette(color_palette: List[List[int]]) -> None:
+    bg_im = Image.new("RGB", (1000, 200), (83, 83, 83))
+    bg_draw = ImageDraw.Draw(bg_im)
 
+    x0, y0, x1, y1 = 0, 0, 200, 200
+    for c1, c2, c3 in color_palette:
+        bg_draw.rectangle((x0, y0, x1, y1), (c1, c2, c3))
+        x0 += 200
+        x1 += 200
+    bg_im.show()
+    return None
 
 
 def main():

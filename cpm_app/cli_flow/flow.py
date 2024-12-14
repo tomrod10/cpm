@@ -1,10 +1,8 @@
 import sys
-import os
 import colorsys
 from cpm_app.cli_flow.utils import get_color_format, get_user_file, get_color_scheme
-from PIL import Image, ImageDraw
 
-from cpm_app.utils import get_color_from_img, make_monochromatic_color_palette
+from cpm_app.utils import get_color_from_img, make_monochromatic_color_palette, draw_color_palette
 
 
 def interactive_flow():
@@ -16,28 +14,21 @@ def interactive_flow():
         color_scheme = get_color_scheme(color_schemes)
         color_format = get_color_format(color_formats)
         main_color = get_color_from_img(file_name)
-        mono_cp = make_monochromatic_color_palette(main_color, color_format)
-        # TODO: Write function to generate color palette
-            # generate_color_palette(cs: str, cf: str)
+        mono_cps = make_monochromatic_color_palette(main_color, color_format)
 
-        # TODO: Pretty print this in a nice user friendly format
+        # TODO: Pretty print this in a nice format
         print("\n")
         print(f"File: {file_name}")
         print(f"Color Scheme: {color_scheme}")
         print(f"Color Format: {color_format}")
+        # TODO: Fix main color and print HLS or RGB depending on user format input...geez!
         print(f"Main Color: {colorsys.hls_to_rgb(main_color[0], main_color[1], main_color[2])}")
-        print(f"Color palette: {mono_cp}")
-
-        bg_im = Image.new("RGB", (1000, 200), (83, 83, 83))
-        bg_draw = ImageDraw.Draw(bg_im)
-        # create image with 5 200 x 200 px squares filled with colors from mono_cp
-
-        x0, y0, x1, y1 = 0, 0, 200, 200
-        for color in mono_cp:
-            bg_draw.rectangle((x0, y0, x1, y1), (color[0], color[1], color[2]))
-            x0 += 200
-            x1 += 200
-        bg_im.show()
+        if isinstance(mono_cps, dict):
+            print(f"Color palette:\nHLS: {mono_cps['h']}\nRGB: {mono_cps['r']}")
+            draw_color_palette(mono_cps['r'])
+        else:
+            print(f"Color palette: {mono_cps}")
+            draw_color_palette(mono_cps) # type: ignore
 
     except ValueError as e:
         print(e, file=sys.stdout)
