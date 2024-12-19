@@ -1,7 +1,7 @@
 import random
 import colorsys
 from PIL import Image, ImageDraw
-from typing import List, Tuple, Dict, Union
+from typing import List, Tuple, Dict
 
 
 def get_color_from_img(file: str) -> Tuple[float, float, float]:
@@ -19,9 +19,9 @@ def get_color_from_img(file: str) -> Tuple[float, float, float]:
     else:
         raise ValueError("Unsupported image mode or grayscale image detected. Only color images supported.")
 
-# Union[ColorPalette, dict[str, ColorPalette]
+
 ColorPalette = Dict[str, List[List[int]]]
-def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: str) -> Union[ColorPalette, List[List[int]]]: #WIP
+def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: str) -> ColorPalette: #WIP
     """
     Returns a 5-step monochromatic color palette in HLS, RGB or both color formats
 
@@ -33,7 +33,6 @@ def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: st
             mono_cps (Dict[str, List[List[int]]]): A dict with a list containing lists of integers as the value for its keys
     """
     steps = 5
-    # mono_cp = list()
     mono_cps = {'h': [], 'r': []}
     h, l, s = hls
 
@@ -66,10 +65,6 @@ def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: st
             # convert back to RGB
             r, g, b = colorsys.hls_to_rgb(new_h, new_l, new_s)
             mono_cps['r'].append([int(r * 255), int(g * 255), int(b * 255)])
-
-        if format in ('r', 'h'):
-            return mono_cps['r']
-
         return mono_cps
     else:
         raise Exception("Unsupported color format")

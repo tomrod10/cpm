@@ -23,12 +23,11 @@ def interactive_flow():
         print(f"Color Format: {color_format}")
         # TODO: Fix main color and print HLS or RGB depending on user format input...geez!
         print(f"Main Color: {colorsys.hls_to_rgb(main_color[0], main_color[1], main_color[2])}")
-        if isinstance(mono_cps, dict):
+        if color_format == 'rh':
             print(f"Color palette:\nHLS: {mono_cps['h']}\nRGB: {mono_cps['r']}")
-            draw_color_palette(mono_cps['r'])
         else:
-            print(f"Color palette: {mono_cps}")
-            draw_color_palette(mono_cps) # type: ignore
+            print(f"Color palette: {mono_cps[color_format]}")
+        draw_color_palette(mono_cps['r'])
 
     except ValueError as e:
         print(e, file=sys.stdout)
