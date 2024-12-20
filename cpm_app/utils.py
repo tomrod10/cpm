@@ -21,7 +21,7 @@ def get_color_from_img(file: str) -> Tuple[float, float, float]:
 
 
 ColorPalette = Dict[str, List[List[int]]]
-def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: str) -> ColorPalette: #WIP
+def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: str) -> ColorPalette:
     """
     Returns a 5-step monochromatic color palette in HLS, RGB or both color formats
 
