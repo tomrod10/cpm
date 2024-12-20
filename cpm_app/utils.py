@@ -67,7 +67,7 @@ def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: st
             mono_cps['r'].append([int(r * 255), int(g * 255), int(b * 255)])
         return mono_cps
     else:
-        raise Exception("Unsupported color format")
+        raise ValueError("Unsupported color format")
 
 
 def draw_color_palette(color_palette: List[List[int]]) -> None:
