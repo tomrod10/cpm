@@ -23,7 +23,7 @@ def get_color_from_img(file: str) -> Tuple[float, float, float]:
 ColorPalette = Dict[str, List[List[int]]]
 def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: str) -> ColorPalette:
     """
-    Returns a 5-step monochromatic color palette in HLS, RGB or both color formats
+    Returns a 5-step monochromatic color palette in HLS and RGB color formats
 
         Parameters:
             hls (Tuple[float, float, float]): A tuple of floats that represents an HLS color
@@ -81,11 +81,3 @@ def draw_color_palette(color_palette: List[List[int]]) -> None:
         x1 += 200
     bg_im.show()
     return None
-
-
-def main():
-    fp = input("Enter file path: ")
-    get_color_from_img(fp)
-
-if __name__ == "__main__":
-    main()
