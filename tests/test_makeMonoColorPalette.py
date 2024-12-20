@@ -1,5 +1,4 @@
 import pytest
-import sys
 from cpm_app.utils import make_monochromatic_color_palette
 
 TEST_HLS_COLOR = (0.37, 0.27, 0.20)
