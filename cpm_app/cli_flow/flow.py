@@ -5,7 +5,7 @@ from cpm_app.cli_flow.utils import get_color_format, get_user_file, get_color_sc
 from cpm_app.utils import get_color_from_img, make_monochromatic_color_palette, draw_color_palette
 
 
-def interactive_flow():
+def interactive_flow() -> None:
     valid_exts = [".jpg", ".jpeg", ".png"]
     color_schemes = ["mono", "alog", "comp", "scomp"]
     color_formats = ["r", "h", ""]
