@@ -17,21 +17,22 @@ def interactive_flow():
         mono_cps = make_monochromatic_color_palette(main_color, color_format)
 
         # TODO: Pretty print this in a nice format
+        # TODO: Move the printing logic into its own function and fix if/else block
         print("\n")
         print(f"File: {file_name}")
         print(f"Color Scheme: {color_scheme}")
         print(f"Color Format: {color_format}")
 
         hls = [int(main_color[0] * 360), int(main_color[1] * 100), int(main_color[2] * 100)]
-        rf, gf, bf = colorsys.hls_to_rgb(main_color[0], main_color[1], main_color[2])
-        rgb = [int(rf * 255), int(gf * 255), int(bf * 255)]
+        r_float, g_float, b_float = colorsys.hls_to_rgb(main_color[0], main_color[1], main_color[2])
+        rgb = [int(r_float * 255), int(g_float * 255), int(b_float * 255)]
         if color_format == "h":
             print(f"Main HLS Color: {hls}")
         if color_format == "r":
             print(f"Main RGB Color: {rgb}")
         if color_format == 'rh':
             print(f"Main Colors: RGB {rgb} | HLS {hls}")
-            print(f"Color palette:\nHLS: {mono_cps['h']}\nRGB: {mono_cps['r']}")
+            print(f"Color palettes:\nHLS: {mono_cps['h']}\nRGB: {mono_cps['r']}")
         else:
             print(f"Color palette: {mono_cps[color_format]}")
         draw_color_palette(mono_cps['r'])
