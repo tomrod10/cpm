@@ -7,7 +7,7 @@ CPM is an image based color palette generator CLI tool that can return color sch
 - Image upload and processing
 - Color palette generation in Hex and RGB
 - Color palette generation in different color schemes
-- Copy and paste generated color in Hex and RGB
+- Copy and paste generated color in Hex, RGB and HLS
 - Let user select between 4 main color schemes before generating (monochromatic, analogous, complementary, split complementary)
 
 ## Extra Features (Non-essential)
@@ -26,6 +26,6 @@ CPM is an image based color palette generator CLI tool that can return color sch
 
 **Language:** Python
 
-**Framework/Tools:** Flask, Rich
+**Framework/Tools:** Pillow, colorsys
 
 **Deployment:** Docker
