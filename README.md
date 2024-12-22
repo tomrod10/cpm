@@ -5,7 +5,7 @@ CPM is an image based color palette generator CLI tool that can return color sch
 
 ## Main Features
 - Image upload and processing
-- Color palette generation in Hex and RGB
+- Color palette generation in Hex, RGB and HLS
 - Color palette generation in different color schemes
 - Copy and paste generated color in Hex, RGB and HLS
 - Let user select between 4 main color schemes before generating (monochromatic, analogous, complementary, split complementary)
