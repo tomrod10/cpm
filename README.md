@@ -20,7 +20,6 @@ CPM is an image based color palette generator CLI tool that can return color sch
 - Have an ‘Explore’ page of popular color palettes
 - Have a ranking or up vote / down vote system
 - Share color palette feature via (link)
-    - It would be nice to generate and display a thumbnail when the link is pasted somewhere
 
 ## Tech
 
