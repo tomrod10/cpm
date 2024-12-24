@@ -21,10 +21,21 @@ CPM is an image based color palette generator CLI tool that can return color sch
 - Have a ranking or up vote / down vote system
 - Share color palette feature via (link)
 
+
+## Milestones
+### M1 - Monochromatic Color Scheme Available
+Users can now select `mono` as their color scheme when generating color palettes
+
+Color Palettes:
+![Screenshot from 2024-12-20 14-14-26](https://github.com/user-attachments/assets/3b2b0eb4-6230-4bd3-bbe0-3172b6ce9026)
+
+Image Used:
+![dawgs](https://github.com/user-attachments/assets/fd59fad1-ae76-4e27-bb4c-a8507e203a2f)
+
 ## Tech
 
 **Language:** Python
 
 **Framework/Tools:** Pillow, colorsys
 
-**Deployment:** Docker
+**Containerization:** Docker
