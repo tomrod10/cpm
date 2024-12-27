@@ -92,6 +92,7 @@ def process_and_print_res(fn: str, cs: str, cf: str, mc: Tuple[float, float, flo
     hls = [int(mc[0] * 360), int(mc[1] * 100), int(mc[2] * 100)]
     r_float, g_float, b_float = colorsys.hls_to_rgb(mc[0], mc[1], mc[2])
     rgb = [int(r_float * 255), int(g_float * 255), int(b_float * 255)]
+
     if cf == "h":
         print(f"Main HLS Color: {hls}")
     if cf == "r":
