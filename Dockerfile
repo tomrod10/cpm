@@ -1,15 +1,12 @@
 FROM python:3.12.3-slim
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONBUFFERED 1
+RUN apt update && apt-get install -y bash
 
 RUN apt update && apt upgrade -y
 
-WORKDIR /app
+COPY requirements.txt cpm/requirements.txt
+RUN pip3 install --no-cache-dir -r cpm/requirements.txt
 
-COPY requirements.txt requirements.txt
-RUN pip3 install --no-cache-dir -r requirements.txt
+COPY cpm_app cpm/cpm_app
 
-COPY . .
-
-RUN mkdir /app/tmp
+ENTRYPOINT ["bin/bash"]

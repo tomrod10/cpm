@@ -1,8 +1,7 @@
 import sys
-import colorsys
 from cpm_app.cli_flow.utils import get_color_format, get_user_file, get_color_scheme
 
-from cpm_app.utils import get_color_from_img, make_monochromatic_color_palette, draw_color_palette
+from cpm_app.utils import get_color_from_img, make_mono_color_palette, process_and_print_res
 
 
 def interactive_flow() -> None:
@@ -14,28 +13,16 @@ def interactive_flow() -> None:
         color_scheme = get_color_scheme(color_schemes)
         color_format = get_color_format(color_formats)
         main_color = get_color_from_img(file_name)
-        mono_cps = make_monochromatic_color_palette(main_color, color_format)
+        color_palette = {}
 
-        # TODO: Pretty print this in a nice format
-        # TODO: Move the printing logic into its own function and fix if/else block
-        print("\n")
-        print(f"File: {file_name}")
-        print(f"Color Scheme: {color_scheme}")
-        print(f"Color Format: {color_format}")
+        match color_scheme:
+            case "mono":
+                color_palette = make_mono_color_palette(main_color, color_format)
+            case _:
+                print("Default case. This feature is still a WIP")
+                raise ValueError("Invalid color scheme. Try again!")
 
-        hls = [int(main_color[0] * 360), int(main_color[1] * 100), int(main_color[2] * 100)]
-        r_float, g_float, b_float = colorsys.hls_to_rgb(main_color[0], main_color[1], main_color[2])
-        rgb = [int(r_float * 255), int(g_float * 255), int(b_float * 255)]
-        if color_format == "h":
-            print(f"Main HLS Color: {hls}")
-        if color_format == "r":
-            print(f"Main RGB Color: {rgb}")
-        if color_format == 'rh':
-            print(f"Main Colors: RGB {rgb} | HLS {hls}")
-            print(f"Color palettes:\nHLS: {mono_cps['h']}\nRGB: {mono_cps['r']}")
-        else:
-            print(f"Color palette: {mono_cps[color_format]}")
-        draw_color_palette(mono_cps['r'])
+        process_and_print_res(file_name, color_scheme, color_format, main_color, color_palette)
 
     except ValueError as e:
         print(e, file=sys.stdout)

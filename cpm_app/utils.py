@@ -21,7 +21,7 @@ def get_color_from_img(file: str) -> Tuple[float, float, float]:
 
 
 ColorPalette = Dict[str, List[List[int]]]
-def make_monochromatic_color_palette(hls: Tuple[float, float, float], format: str) -> ColorPalette:
+def make_mono_color_palette(hls: Tuple[float, float, float], format: str) -> ColorPalette:
     """
     Returns a 5-step monochromatic color palette in HLS and RGB color formats
 
@@ -81,3 +81,25 @@ def draw_color_palette(color_palette: List[List[int]]) -> None:
         x1 += 200
     bg_im.show()
     return None
+
+# TODO: Pretty print this in a nice format
+def process_and_print_res(fn: str, cs: str, cf: str, mc: Tuple[float, float, float], cp: ColorPalette) -> None:
+    print("\n")
+    print(f"File: {fn}")
+    print(f"Color Scheme: {cs}")
+    print(f"Color Format: {cf}")
+
+    hls = [int(mc[0] * 360), int(mc[1] * 100), int(mc[2] * 100)]
+    r_float, g_float, b_float = colorsys.hls_to_rgb(mc[0], mc[1], mc[2])
+    rgb = [int(r_float * 255), int(g_float * 255), int(b_float * 255)]
+
+    if cf == "h":
+        print(f"Main HLS Color: {hls}")
+    if cf == "r":
+        print(f"Main RGB Color: {rgb}")
+    if cf == 'rh':
+        print(f"Main Colors: RGB {rgb} | HLS {hls}")
+        print(f"Color palettes:\nHLS: {cp['h']}\nRGB: {cp['r']}")
+    else:
+        print(f"Color palette: {cp[cf]}")
+    draw_color_palette(cp['r'])
