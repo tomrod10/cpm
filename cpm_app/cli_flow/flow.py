@@ -1,7 +1,7 @@
 import sys
 from cpm_app.cli_flow.utils import get_color_format, get_user_file, get_color_scheme
 
-from cpm_app.utils import get_color_from_img, make_monochromatic_color_palette, process_and_print_res
+from cpm_app.utils import get_color_from_img, make_mono_color_palette, process_and_print_res
 
 
 def interactive_flow() -> None:
@@ -17,10 +17,11 @@ def interactive_flow() -> None:
 
         match color_scheme:
             case "mono":
-                color_palette = make_monochromatic_color_palette(main_color, color_format)
+                color_palette = make_mono_color_palette(main_color, color_format)
             case _:
                 print("Default case. This feature is still a WIP")
-        # mono_cps = make_monochromatic_color_palette(main_color, color_format)
+                raise ValueError("Invalid color scheme. Try again!")
+
         process_and_print_res(file_name, color_scheme, color_format, main_color, color_palette)
 
     except ValueError as e:
