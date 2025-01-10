@@ -4,6 +4,13 @@ from PIL import Image, ImageDraw
 from typing import List, Tuple, Dict
 
 
+# HLS units and range
+SINGLE_UNIT = 0.00990099 # Equivalent to single unit in the 0 - 100 range
+SINGLE_HUE_UNIT = 0.0027777777 # Equivalent to single unit in the 0 - 360 range
+RANGE_CEIL = 0.9999999999999999  # Equivalent to the max value in our number range
+
+STEPS = 5
+
 def get_color_from_img(file: str) -> Tuple[float, float, float]:
     with Image.open(file) as im:
         im = im.convert("RGB")
@@ -32,8 +39,7 @@ def make_mono_color_palette(hls: Tuple[float, float, float], format: str) -> Col
         Returns:
             mono_cps (Dict[str, List[List[int]]]): A dict with a list containing lists of integers as the value for its keys
     """
-    steps = 5
-    mono_cps = {'h': [], 'r': []}
+    color_palette = {'h': [], 'r': []}
     h, l, s = hls
 
     if format in ("r", "h", "rh"):
@@ -41,10 +47,7 @@ def make_mono_color_palette(hls: Tuple[float, float, float], format: str) -> Col
         new_l = 0.0
         new_s = s
 
-        SINGLE_UNIT = 0.00990099 # Equivalent to single unit in the 0 - 100 range
-        SINGLE_HUE_UNIT = 0.0027777777 # Equivalent to single unit in the 0 - 360 range
-        RANGE_CEIL = 0.9999999999999999  # Equivalent to the max value in our float number range
-        for i in range(steps):
+        for i in range(STEPS):
             if i == 0 or i == 4:
                 variation = random.uniform(SINGLE_HUE_UNIT, (SINGLE_HUE_UNIT * 3.0))
                 if h + variation > RANGE_CEIL:
@@ -61,11 +64,58 @@ def make_mono_color_palette(hls: Tuple[float, float, float], format: str) -> Col
 
             new_l += random.uniform((SINGLE_UNIT * 8.0), (SINGLE_UNIT * 20.0))
 
-            mono_cps['h'].append([int(new_h * 360), int(new_l * 100), int(new_s * 100)])
+            color_palette['h'].append([int(new_h * 360), int(new_l * 100), int(new_s * 100)])
             # convert back to RGB
             r, g, b = colorsys.hls_to_rgb(new_h, new_l, new_s)
-            mono_cps['r'].append([int(r * 255), int(g * 255), int(b * 255)])
-        return mono_cps
+            color_palette['r'].append([int(r * 255), int(g * 255), int(b * 255)])
+        return color_palette
+    else:
+        raise ValueError("Unsupported color format")
+
+
+def make_alog_color_palette(hls: Tuple[float, float, float], format: str) -> ColorPalette:
+    color_palette = {'h': [], 'r': []}
+    h, l, s = hls
+
+    if format in ("r", "h", "rh"):
+        new_h = h
+        new_l = 0.0
+        new_s = s
+
+        for i in range(STEPS):
+            end_variation = random.uniform((SINGLE_UNIT * 18), (SINGLE_UNIT * 27))
+            center_variation = random.uniform((SINGLE_UNIT * 7), (SINGLE_UNIT * 15))
+            if i == 0:
+                new_h = h - end_variation
+            if i == 1:
+                new_h = h - center_variation
+            if i == 2:
+                new_h = h
+            if i == 3:
+                new_h = h + center_variation
+            if i == 4:
+                new_h = h + end_variation
+
+            # TODO: This might need some tweaking
+            if new_h > RANGE_CEIL:
+                new_h -= RANGE_CEIL
+            if new_h < 0:
+                new_h += RANGE_CEIL
+
+            if i == 1 or i == 3:
+                variation = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0))
+                if s + variation > RANGE_CEIL:
+                    new_s = s - variation
+                else:
+                    new_s = s + variation
+
+            new_l += random.uniform((SINGLE_UNIT * 8.0), (SINGLE_UNIT * 20.0))
+
+            color_palette['h'].append([int(new_h * 360), int(new_l * 100), int(new_s * 100)])
+            # convert back to RGB
+            r, g, b = colorsys.hls_to_rgb(new_h, new_l, new_s)
+            color_palette['r'].append([int(r * 255), int(g * 255), int(b * 255)])
+        return color_palette
     else:
         raise ValueError("Unsupported color format")
 
