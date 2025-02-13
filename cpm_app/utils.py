@@ -37,7 +37,7 @@ def make_mono_color_palette(hls: Tuple[float, float, float], format: str) -> Col
             format (string): A string representing color format to return to user. 'h' for HLS, 'r' for RGB and None or 'b' for both HLS and RGB
 
         Returns:
-            mono_cps (Dict[str, List[List[int]]]): A dict with a list containing lists of integers as the value for its keys
+            color_palette (Dict[str, List[List[int]]]): A dict with a list containing lists of integers as the value for its keys
     """
     color_palette = {'h': [], 'r': []}
     h, l, s = hls
@@ -74,6 +74,16 @@ def make_mono_color_palette(hls: Tuple[float, float, float], format: str) -> Col
 
 
 def make_alog_color_palette(hls: Tuple[float, float, float], format: str) -> ColorPalette:
+    """
+    Returns a 5-step analogous color palette in HLS and RGB color formats
+
+        Parameters:
+            hls (Tuple[float, float, float]): A tuple of floats that represents an HLS color
+            format (string): A string representing color format to return to user. 'h' for HLS, 'r' for RGB and None or 'b' for both HLS and RGB
+
+        Returns:
+            color_palette (Dict[str, List[List[int]]]): A dict with a list containing lists of integers as the value for its keys
+    """
     color_palette = {'h': [], 'r': []}
     h, l, s = hls
 
