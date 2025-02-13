@@ -29,6 +29,12 @@ Users can now select `mono` as their color scheme when generating color palettes
 Color Palettes:
 ![Screenshot from 2024-12-20 14-14-26](https://github.com/user-attachments/assets/3b2b0eb4-6230-4bd3-bbe0-3172b6ce9026)
 
+### M2 - Analogous Color Scheme Available
+Users can now select `alog` as their color scheme when generating color palettes
+
+Color Palettes:
+![Screenshot from 2025-02-12 20-18-28](https://github.com/user-attachments/assets/2d9c6840-480f-481a-9d5f-b2f24e237d47)
+
 Image Used:
 ![dawgs](https://github.com/user-attachments/assets/fd59fad1-ae76-4e27-bb4c-a8507e203a2f)
 
