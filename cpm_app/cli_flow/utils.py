@@ -6,7 +6,9 @@ from typing import Union
 
 def get_user_file(valid_exts: list[str]) -> str:
     while True:
-        file_name = input("Enter name of the file you wish to generate a palette from: ")
+        file_name = input(
+            "Enter name of the file you wish to generate a palette from: "
+        )
         if not len(file_name) or not os.path.isfile(file_name):
             print("[Filename not found or invalid! Try again]")
             continue
@@ -28,7 +30,9 @@ def get_color_scheme(color_schemes: list[str]) -> str:
 
 def get_color_format(color_formats: list[str]) -> str:
     while True:
-        color_format = input("For color palette format enter r for RGB, h for HSL, omit for both: ")
+        color_format = input(
+            "For color palette format enter r for RGB, h for HSL, omit for both: "
+        )
         if color_format not in color_formats:
             print("[Invalid color format! Try again]")
             continue
@@ -45,5 +49,6 @@ def get_color_format(color_formats: list[str]) -> str:
 
 
 # TODO: Write function to generate color palette
-def generate_color_palette(cs: str, cf: str) -> Union[list[tuple], list[str]]:
-    ...
+def generate_color_palette(
+    cs: str, cf: str
+) -> Union[list[tuple], list[str]]: ...

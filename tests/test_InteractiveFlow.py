@@ -1,6 +1,10 @@
 import unittest
 from unittest.mock import patch
-from cpm_app.cli_flow.utils import get_color_format, get_user_file, get_color_scheme
+from cpm_app.cli_flow.utils import (
+    get_color_format,
+    get_user_file,
+    get_color_scheme,
+)
 
 
 class TestGetUserFile(unittest.TestCase):
@@ -8,11 +12,9 @@ class TestGetUserFile(unittest.TestCase):
     @patch("os.path.isfile")
     @patch("mimetypes.guess_extension")
     @patch("magic.from_file")
-    def test_valid_file(self,
-                        mock_magic,
-                        mock_guess_extension,
-                        mock_isfile,
-                        mock_input):
+    def test_valid_file(
+        self, mock_magic, mock_guess_extension, mock_isfile, mock_input
+    ):
         # Mocking user input
         mock_input.return_value = "valid_image.png"
         # Mocking file existence
@@ -36,6 +38,7 @@ class TestGetUserFile(unittest.TestCase):
         # Ensure magic.from_file was called with the correct file name
         mock_magic.assert_called_once_with("valid_image.png", mime=True)
 
+
 class TestGetColorScheme(unittest.TestCase):
     @patch("builtins.input")
     def test_get_mono_scheme(self, mock_input):
@@ -43,6 +46,7 @@ class TestGetColorScheme(unittest.TestCase):
         result = get_color_scheme(["mono", "alog", "comp", "scomp"])
         self.assertEqual(result, "mono")
         mock_input.assert_called_once()
+
 
 class TestGetColorFormat(unittest.TestCase):
     @patch("builtins.input")
