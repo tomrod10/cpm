@@ -189,13 +189,7 @@ def make_comp_color_palette(
             new_h = find_adjacent_hue(new_h)
 
             if i in (1, 3):
-                variation = random.uniform(
-                    (SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0)
-                )
-                if s + variation > RANGE_CEIL:
-                    new_s = s - variation
-                else:
-                    new_s = s + variation
+                new_s = find_next_sat(s)
 
             new_l += random.uniform((SINGLE_UNIT * 8.0), (SINGLE_UNIT * 20.0))
 
@@ -245,10 +239,10 @@ def normalize_hue(hue: float, shift: float):
 
 def find_next_sat(sat: float):
     shift = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0))
-    new_sat = sat + shift
-    if new_sat > RANGE_CEIL:
+    new_s = sat + shift
+    if new_s > RANGE_CEIL:
         return normalize_sat(sat, shift)
-    return new_sat
+    return new_s
 
 
 def normalize_sat(sat: float, shift: float):
