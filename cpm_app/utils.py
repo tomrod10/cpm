@@ -178,15 +178,12 @@ def make_comp_color_palette(
 
         for i in range(STEPS):
             # append hue value
-            color_palette["h"].append(
-                [new_h, new_l, new_s]
-            )
+            color_palette["h"].append([new_h, new_l, new_s])
 
-            # Calculate complementary hue and append
-            comp_h = find_comp_hue(new_h)
-            comp_colors.append(
-                [comp_h , new_l, new_s]
-            )
+            if i in (0, 2):
+                # Calculate complementary hue and append
+                comp_h = find_comp_hue(new_h)
+                comp_colors.append([comp_h, new_l, new_s])
 
             # Get new hue to then get its complement in the next loop
             new_h = find_adjacent_hue(new_h)
@@ -201,15 +198,15 @@ def make_comp_color_palette(
                     new_s = s + variation
 
             new_l += random.uniform((SINGLE_UNIT * 8.0), (SINGLE_UNIT * 20.0))
-        
-        color_palette["h"] += comp_colors[::-1]
-        print("-----------", color_palette)
+
+        color_palette["h"][0:3] += comp_colors
+        print("-----------", len(color_palette["h"]))
         color_palette = convert_to_valid_color_palettes(color_palette)
         return color_palette
     else:
         raise ValueError("Unsupported color format")
 
-# This function should only calculate the next main hue. Create separate function to get complementary color
+
 def find_adjacent_hue(hue: float):
     """
     Calculates the degree shift in the color wheel as a floating number and applies it to the passed hue and returns it
@@ -229,39 +226,53 @@ def find_adjacent_hue(hue: float):
         return normalize_hue(hue, shift)
     return adj_hue
 
+
 def find_comp_hue(hue: float):
-    shift =  SINGLE_HUE_UNIT * 180.0
+    shift = SINGLE_HUE_UNIT * 180.0
     comp_hue = hue + shift
-    
+
     if comp_hue > RANGE_CEIL:
         return normalize_hue(hue, shift)
     return comp_hue
 
+
 def normalize_hue(hue: float, shift: float):
     diff = RANGE_CEIL - hue
-    shift -= diff
+    shift = abs(shift - diff)
     hue = 0.0 + shift
     return hue
 
-def normalize_light_and_sat(light, sat): ...
+
+def find_next_sat(sat: float):
+    shift = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0))
+    new_sat = sat + shift
+    if new_sat > RANGE_CEIL:
+        return normalize_sat(sat, shift)
+    return new_sat
+
+
+def normalize_sat(sat: float, shift: float):
+    diff = RANGE_CEIL - sat
+    shift = abs(shift - diff)
+    sat = 0.0 + shift
+    return sat
+
 
 def convert_to_valid_color_palettes(color_palette: ColorPalette):
     hls, rgb = color_palette.values()
-    for (h, l, s) in hls:
+    for h, l, s in hls:
         # convert to rgb non decimal
         r, g, b = colorsys.hls_to_rgb(h, l, s)
-        rgb.append([
-            int(r * 255), int(g * 255), int(b * 255)
-        ])
+        rgb.append([int(r * 255), int(g * 255), int(b * 255)])
 
-        #TODO: convert to hex value
-        
+        # TODO: convert to hex value
+
         # convert to hls non decimal
-        h = int(h * 360)
         l = int(l * 100)
         s = int(s * 100)
 
     return {"h": hls, "r": rgb}
+
 
 def draw_color_palette(color_palette: List[List[int]]) -> None:
     bg_im = Image.new("RGB", (1000, 200), (83, 83, 83))
