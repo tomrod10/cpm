@@ -211,7 +211,7 @@ def find_adjacent_hue(hue: float):
         single_h_unit (float): Single value unit in color wheel (1˚) as a float
 
     Returns:
-        hue (float): Hue value in HLS format
+        adj_hue (float): Adjacent hue value in HLS format
     """
     shift = SINGLE_HUE_UNIT * random.uniform(5.0, 20.0)
     adj_hue = hue + shift
@@ -227,6 +227,9 @@ def find_comp_hue(hue: float):
 
     Parameters:
         hue (float): Hue value in HLS format
+
+    Returns:
+        comp_hue (float): Complementary hue value in HLS format
     """
     shift = SINGLE_HUE_UNIT * 180.0
     comp_hue = hue + shift
@@ -243,6 +246,9 @@ def normalize_hue(hue: float, shift: float):
     Parameters:
         hue (float): Hue value in HLS format
         shift (float): Amount moving in the color wheel
+    
+    Returns:
+        hue (float): Hue value in HLS format
     """
     diff = RANGE_CEIL - hue
     shift = abs(shift - diff)
@@ -256,6 +262,9 @@ def find_next_sat(sat: float):
 
     Parameters:
         sat (float): Saturation value in HLS format
+    
+    Returns:
+        new_s (float): Shifted saturation value in HLS format
     """
     shift = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0))
     new_s = sat + shift
@@ -271,6 +280,9 @@ def normalize_sat(sat: float, shift: float):
     Parameters:
         sat (float): Saturation value in HLS format
         shift (float): Amount moving in the color wheel
+
+    Returns:
+        sat (float): Normalized saturation value in HLS format
     """
     diff = RANGE_CEIL - sat
     shift = abs(shift - diff)
