@@ -174,27 +174,27 @@ def make_comp_color_palette(
         new_h = h
         new_l = l
         new_s = s
-        comp_colors = []
 
-        for i in range(STEPS):
-            # append hue value
-            color_palette["h"].append([new_h, new_l, new_s])
+        main_clr = []
+        comp_clr = []
+        i = 0
+        while len(main_clr) + len(comp_clr) < 5:
+            main_clr.append([new_h, new_l, new_s])
 
             if i in (0, 2):
                 # Calculate complementary hue and append
                 comp_h = find_comp_hue(new_h)
-                comp_colors.append([comp_h, new_l, new_s])
+                comp_clr.append([comp_h, new_l, new_s])
 
-            # Get new hue to then get its complement in the next loop
             new_h = find_adjacent_hue(new_h)
 
             if i in (1, 3):
                 new_s = find_next_sat(s)
 
             new_l += random.uniform((SINGLE_UNIT * 8.0), (SINGLE_UNIT * 20.0))
+            i += 1
 
-        color_palette["h"][0:3] += comp_colors
-        print("-----------", len(color_palette["h"]))
+        color_palette["h"] = main_clr[::-1] + comp_clr
         color_palette = convert_to_valid_color_palettes(color_palette)
         return color_palette
     else:
