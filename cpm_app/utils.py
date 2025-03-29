@@ -162,7 +162,7 @@ def make_alog_color_palette(
     else:
         raise ValueError("Unsupported color format")
 
-
+# TODO: Add documentation
 def make_comp_color_palette(
     hls: Tuple[float, float, float], format: str
 ) -> ColorPalette:
@@ -203,7 +203,7 @@ def make_comp_color_palette(
 
 def find_adjacent_hue(hue: float):
     """
-    Calculates the degree shift in the color wheel as a floating number and applies it to the passed hue and returns it
+    Calculates the degree shift in the color wheel as a floating number and applies it to the passed hue
 
     Parameters:
         hue (float): Hue value in HLS format
@@ -222,6 +222,12 @@ def find_adjacent_hue(hue: float):
 
 
 def find_comp_hue(hue: float):
+    """
+    Finds the complementary hue and checks that it is within bounds
+
+    Parameters:
+        hue (float): Hue value in HLS format
+    """
     shift = SINGLE_HUE_UNIT * 180.0
     comp_hue = hue + shift
 
@@ -231,6 +237,13 @@ def find_comp_hue(hue: float):
 
 
 def normalize_hue(hue: float, shift: float):
+    """
+    Returns the correct color within the bounds of a color wheel 0˚ - 360˚ (0 - 0.9~ in floating number)
+
+    Parameters:
+        hue (float): Hue value in HLS format
+        shift (float): Amount moving in the color wheel
+    """
     diff = RANGE_CEIL - hue
     shift = abs(shift - diff)
     hue = 0.0 + shift
@@ -238,6 +251,12 @@ def normalize_hue(hue: float, shift: float):
 
 
 def find_next_sat(sat: float):
+    """
+    Finds the next saturation value and checks that it is within bounds
+
+    Parameters:
+        sat (float): Saturation value in HLS format
+    """
     shift = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0))
     new_s = sat + shift
     if new_s > RANGE_CEIL:
@@ -246,12 +265,19 @@ def find_next_sat(sat: float):
 
 
 def normalize_sat(sat: float, shift: float):
+    """
+    Returns the correct saturation within the bounds of HLS format 0 - 100 (0 - 0.9~ in floating number)
+
+    Parameters:
+        sat (float): Saturation value in HLS format
+        shift (float): Amount moving in the color wheel
+    """
     diff = RANGE_CEIL - sat
     shift = abs(shift - diff)
     sat = 0.0 + shift
     return sat
 
-
+# TODO: Add documentation
 def convert_to_valid_color_palettes(color_palette: ColorPalette):
     hls, rgb = color_palette.values()
     for h, l, s in hls:
@@ -261,7 +287,7 @@ def convert_to_valid_color_palettes(color_palette: ColorPalette):
 
         # TODO: convert to hex value
 
-        # convert to hls non decimal
+        # TODO: convert to hls non decimal
         l = int(l * 100)
         s = int(s * 100)
 
