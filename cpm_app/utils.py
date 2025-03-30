@@ -207,8 +207,6 @@ def find_adjacent_hue(hue: float):
 
     Parameters:
         hue (float): Hue value in HLS format
-        ceil (float): Max value in color wheel (360˚) as a float
-        single_h_unit (float): Single value unit in color wheel (1˚) as a float
 
     Returns:
         adj_hue (float): Adjacent hue value in HLS format
@@ -217,7 +215,7 @@ def find_adjacent_hue(hue: float):
     adj_hue = hue + shift
 
     if adj_hue > RANGE_CEIL:
-        return normalize_hue(hue, shift)
+        return normalize_hls(hue, shift)
     return adj_hue
 
 
@@ -235,25 +233,25 @@ def find_comp_hue(hue: float):
     comp_hue = hue + shift
 
     if comp_hue > RANGE_CEIL:
-        return normalize_hue(hue, shift)
+        return normalize_hls(hue, shift)
     return comp_hue
 
 
-def normalize_hue(hue: float, shift: float):
+def normalize_hls(val: float, shift: float):
     """
     Returns the correct color within the bounds of a color wheel 0˚ - 360˚ (0 - 0.9~ in floating number)
 
     Parameters:
-        hue (float): Hue value in HLS format
+        val (float): val value in HLS format (hue or saturation)
         shift (float): Amount moving in the color wheel
     
     Returns:
-        hue (float): Hue value in HLS format
+        val (float): val value in HLS format
     """
-    diff = RANGE_CEIL - hue
+    diff = RANGE_CEIL - val
     shift = abs(shift - diff)
-    hue = 0.0 + shift
-    return hue
+    val = 0.0 + shift
+    return val
 
 
 def find_next_sat(sat: float):
@@ -269,25 +267,9 @@ def find_next_sat(sat: float):
     shift = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0))
     new_s = sat + shift
     if new_s > RANGE_CEIL:
-        return normalize_sat(sat, shift)
+        return normalize_hls(sat, shift)
     return new_s
 
-
-def normalize_sat(sat: float, shift: float):
-    """
-    Returns the correct saturation within the bounds of HLS format 0 - 100 (0 - 0.9~ in floating number)
-
-    Parameters:
-        sat (float): Saturation value in HLS format
-        shift (float): Amount moving in the color wheel
-
-    Returns:
-        sat (float): Normalized saturation value in HLS format
-    """
-    diff = RANGE_CEIL - sat
-    shift = abs(shift - diff)
-    sat = 0.0 + shift
-    return sat
 
 # TODO: Add documentation
 def convert_to_valid_color_palettes(color_palette: ColorPalette):
