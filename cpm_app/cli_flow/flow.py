@@ -8,6 +8,7 @@ from cpm_app.utils import (
     get_color_from_img,
     make_mono_color_palette,
     make_alog_color_palette,
+    make_comp_color_palette,
     process_and_print_res,
 )
 
@@ -32,6 +33,10 @@ def interactive_flow() -> None:
                     )
                 case "alog":
                     color_palette = make_alog_color_palette(
+                        main_color, color_format
+                    )
+                case "comp":
+                    color_palette = make_comp_color_palette(
                         main_color, color_format
                     )
                 case _:

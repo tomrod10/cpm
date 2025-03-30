@@ -5,7 +5,7 @@ from typing import List, Tuple, Dict
 
 
 # HLS units and range
-SINGLE_UNIT = 0.00990099  # Equivalent to single unit in the 0 - 100 range
+SINGLE_UNIT = 0.00990099  # Equivalent to single unit in the 0 - 100 range for L and S in HLS
 SINGLE_HUE_UNIT = 0.0027777777  # Equivalent to single unit in the 0 - 360 range
 RANGE_CEIL = (
     0.9999999999999999  # Equivalent to the max value in our number range
@@ -161,6 +161,131 @@ def make_alog_color_palette(
         return color_palette
     else:
         raise ValueError("Unsupported color format")
+
+# TODO: Add documentation
+def make_comp_color_palette(
+    hls: Tuple[float, float, float], format: str
+) -> ColorPalette:
+    # init
+    h, l, s = hls
+    color_palette = {"h": [], "r": []}
+
+    if format in ("r", "h", "rh"):
+        new_h = h
+        new_l = l
+        new_s = s
+
+        main_clr = []
+        comp_clr = []
+        i = 0
+        while len(main_clr) + len(comp_clr) < 5:
+            main_clr.append([new_h, new_l, new_s])
+
+            if i in (0, 2):
+                # Calculate complementary hue and append
+                comp_h = find_comp_hue(new_h)
+                comp_clr.append([comp_h, new_l, new_s])
+
+            new_h = find_adjacent_hue(new_h)
+
+            if i in (1, 3):
+                new_s = find_next_sat(s)
+
+            new_l += random.uniform((SINGLE_UNIT * 8.0), (SINGLE_UNIT * 20.0))
+            i += 1
+
+        color_palette["h"] = main_clr[::-1] + comp_clr
+        color_palette = convert_to_valid_color_palettes(color_palette)
+        return color_palette
+    else:
+        raise ValueError("Unsupported color format")
+
+
+def find_adjacent_hue(hue: float):
+    """
+    Calculates the degree shift in the color wheel as a floating number and applies it to the passed hue
+
+    Parameters:
+        hue (float): Hue value in HLS format
+
+    Returns:
+        adj_hue (float): Adjacent hue value in HLS format
+    """
+    shift = SINGLE_HUE_UNIT * random.uniform(5.0, 20.0)
+    adj_hue = hue + shift
+
+    if adj_hue > RANGE_CEIL:
+        return normalize_hls(hue, shift)
+    return adj_hue
+
+
+def find_comp_hue(hue: float):
+    """
+    Finds the complementary hue and checks that it is within bounds
+
+    Parameters:
+        hue (float): Hue value in HLS format
+
+    Returns:
+        comp_hue (float): Complementary hue value in HLS format
+    """
+    shift = SINGLE_HUE_UNIT * 180.0
+    comp_hue = hue + shift
+
+    if comp_hue > RANGE_CEIL:
+        return normalize_hls(hue, shift)
+    return comp_hue
+
+
+def normalize_hls(val: float, shift: float):
+    """
+    Returns the correct color within the bounds of a color wheel 0˚ - 360˚ (0 - 0.9~ in floating number)
+
+    Parameters:
+        val (float): val value in HLS format (hue or saturation)
+        shift (float): Amount moving in the color wheel
+    
+    Returns:
+        val (float): val value in HLS format
+    """
+    diff = RANGE_CEIL - val
+    shift = abs(shift - diff)
+    val = 0.0 + shift
+    return val
+
+
+def find_next_sat(sat: float):
+    """
+    Finds the next saturation value and checks that it is within bounds
+
+    Parameters:
+        sat (float): Saturation value in HLS format
+    
+    Returns:
+        new_s (float): Shifted saturation value in HLS format
+    """
+    shift = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0))
+    new_s = sat + shift
+    if new_s > RANGE_CEIL:
+        return normalize_hls(sat, shift)
+    return new_s
+
+
+# TODO: Add documentation
+def convert_to_valid_color_palettes(color_palette: ColorPalette):
+    hls, rgb = color_palette.values()
+    for h, l, s in hls:
+        # convert to rgb non decimal
+        r, g, b = colorsys.hls_to_rgb(h, l, s)
+        rgb.append([int(r * 255), int(g * 255), int(b * 255)])
+
+        # TODO: convert to hex value
+
+        # TODO: convert to hls non decimal
+        l = int(l * 100)
+        s = int(s * 100)
+
+    return {"h": hls, "r": rgb}
 
 
 def draw_color_palette(color_palette: List[List[int]]) -> None:
