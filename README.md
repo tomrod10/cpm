@@ -8,7 +8,7 @@ CPM is an image based color palette generator CLI tool that can return color sch
 - Color palette generation in Hex, RGB and HLS
 - Color palette generation in different color schemes
 - Copy and paste generated color in Hex, RGB and HLS
-- Let user select between 4 main color schemes (monochromatic, analogous, complementary, split complementary)
+- Let user select between 3 main color schemes (monochromatic, analogous and complementary)
 
 ## Extra Features (Non-essential)
 
@@ -34,6 +34,13 @@ Users can now select `alog` as their color scheme when generating color palettes
 
 Color Palettes:
 ![Screenshot from 2025-02-12 20-18-28](https://github.com/user-attachments/assets/2d9c6840-480f-481a-9d5f-b2f24e237d47)
+
+### M3 - Complementary Color Scheme Available
+Users can now select `comp` as their color scheme when generating color palettes
+
+Color Palettes:
+<img width="1003" alt="Screenshot 2025-03-29 at 20 52 53" src="https://github.com/user-attachments/assets/601a5aa8-c2e8-4761-b1e1-578401528833" />
+
 
 Image Used:
 ![dawgs](https://github.com/user-attachments/assets/fd59fad1-ae76-4e27-bb4c-a8507e203a2f)
