@@ -52,3 +52,10 @@ Image Used:
 **Framework/Tools:** Pillow, colorsys
 
 **Containerization:** Docker
+
+**Testing:**
+-cd into cpm dir
+-Create a venv
+-Run `pip install -r requirements.txt`
+-In the terminal run `python -m cpm_app.main`
+-Follow the program's prompt
