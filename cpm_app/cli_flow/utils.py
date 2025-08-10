@@ -17,6 +17,14 @@ def get_user_file(valid_exts: list[str]) -> str:
             print("[Invalid file extension! Try another]")
             continue
         return file_name
+    
+def get_palette_steps(steps_range: tuple(int)) -> int: # type: ignore
+    hi, lo = steps_range
+    while True:
+        steps: int = input("Enter number of steps between 2 and 10: ")
+        if not isinstance(s, int) and (lo < steps > hi):
+            print("[Invalid input. Either out-of-range or not a number! Try again]")
+        return steps
 
 
 def get_color_scheme(color_schemes: list[str]) -> str:

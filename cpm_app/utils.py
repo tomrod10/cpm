@@ -40,7 +40,7 @@ ColorPalette = Dict[str, List[List[int]]]
 
 
 def make_mono_color_palette(
-    hls: Tuple[float, float, float], format: str
+    hls: Tuple[float, float, float], format: str, steps: int
 ) -> ColorPalette:
     """
     Returns a 5-step monochromatic color palette in HLS and RGB color formats
