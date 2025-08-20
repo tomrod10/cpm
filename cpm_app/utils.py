@@ -54,6 +54,7 @@ def make_mono_color_palette(
     """
     color_palette = {"h": [], "r": []}
     h, l, s = hls
+    shv, slsv = find_palette_values_for_n_steps(steps)
 
     if format in ("r", "h", "rh"):
         new_h = h
@@ -200,6 +201,10 @@ def make_comp_color_palette(
     else:
         raise ValueError("Unsupported color format")
 
+def find_palette_values_for_n_steps(steps: int):
+    single_hue_unit = 360.0 / steps
+    single_light_sat_unit = 100.0 / steps
+    return single_hue_unit, single_light_sat_unit
 
 def find_adjacent_hue(hue: float):
     """
