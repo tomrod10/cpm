@@ -47,7 +47,7 @@ def interactive_flow() -> None:
                     raise ValueError("Invalid color scheme. Try again!")
 
             process_and_print_res(
-                file_name, color_scheme, color_format, main_color, color_palette
+                file_name, color_scheme, color_format, main_color, color_palette, steps
             )
 
             retry = input(

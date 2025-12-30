@@ -298,8 +298,8 @@ def convert_to_valid_color_palettes(color_palette: ColorPalette):
     return {"h": hls, "r": rgb}
 
 
-def draw_color_palette(color_palette: List[List[int]]) -> None:
-    bg_im = Image.new("RGB", (1000, 200), (83, 83, 83))
+def draw_color_palette(color_palette: List[List[int]], steps: int) -> None:
+    bg_im = Image.new("RGB", (steps * 200, 200), (83, 83, 83))
     bg_draw = ImageDraw.Draw(bg_im)
 
     x0, y0, x1, y1 = 0, 0, 200, 200
@@ -313,7 +313,7 @@ def draw_color_palette(color_palette: List[List[int]]) -> None:
 
 # TODO: Pretty print this in a nice format
 def process_and_print_res(
-    fn: str, cs: str, cf: str, mc: Tuple[float, float, float], cp: ColorPalette
+    fn: str, cs: str, cf: str, mc: Tuple[float, float, float], cp: ColorPalette, steps: int
 ) -> None:
     print("\n")
     print(f"File: {fn}")
@@ -333,4 +333,4 @@ def process_and_print_res(
         print(f"Color palettes:\nHLS: {cp['h']}\nRGB: {cp['r']}")
     else:
         print(f"Color palette: {cp[cf]}")
-    draw_color_palette(cp["r"])
+    draw_color_palette(cp["r"], steps)
