@@ -1,7 +1,7 @@
 import os
 import magic
 import mimetypes
-from typing import Union, Tuple
+from typing import Union
 
 
 def get_user_file(valid_exts: list[str]) -> str:
