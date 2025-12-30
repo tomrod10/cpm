@@ -5,11 +5,12 @@ from typing import List, Tuple, Dict
 
 
 # HLS units and range
-SINGLE_UNIT = 0.00990099  # Equivalent to single unit in the 0 - 100 range for L and S in HLS
-SINGLE_HUE_UNIT = 0.0027777777  # Equivalent to single unit in the 0 - 360 range
-RANGE_CEIL = (
-    0.9999999999999999  # Equivalent to the max value in our number range
-)
+# SINGLE_UNIT = 0.00990099  # Equivalent to single unit in the 0 - 100 range for L and S in HLS
+SINGLE_UNIT = 1.0 / 100.0  # Equivalent to single unit in the 0 - 100 range for L and S in HLS
+# SINGLE_HUE_UNIT = 0.0027777777  # Equivalent to single unit in the 0 - 360 range
+SINGLE_HUE_UNIT = 1.0 / 360.0  # Equivalent to single unit in the 0 - 360 range
+# RANGE_CEIL = 0.9999999999999999  # Equivalent to the max value in our number range
+RANGE_CEIL = 100.0 / 100.0  # Equivalent to the max value in our number range
 
 STEPS = 5
 
@@ -54,33 +55,36 @@ def make_mono_color_palette(
     """
     color_palette = {"h": [], "r": []}
     h, l, s = hls
-    shv, slsv = find_palette_values_for_n_steps(steps)
+    shv, slsv = find_palette_values_for_n_steps(steps) # I don't think this is necessary/makes sense
 
     if format in ("r", "h", "rh"):
         new_h = h
         new_l = 0.0
         new_s = s
 
-        for i in range(STEPS):
-            if i == 0 or i == 4:
-                variation = random.uniform(
-                    SINGLE_HUE_UNIT, (SINGLE_HUE_UNIT * 3.0)
-                )
-                if h + variation > RANGE_CEIL:
-                    new_h = h - variation
-                else:
-                    new_h = h + variation
+        for _ in range(steps):
+            h_variation = random.uniform(
+                SINGLE_HUE_UNIT, (SINGLE_HUE_UNIT * 4.0)
+            )
+            if h + h_variation > RANGE_CEIL:
+                new_h = normalize_hls(h, h_variation)
+            else:
+                new_h = h + h_variation
 
-            if i == 1 or i == 3:
-                variation = random.uniform(
-                    (SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0)
-                )
-                if s + variation > RANGE_CEIL:
-                    new_s = s - variation
-                else:
-                    new_s = s + variation
+            s_variation = random.uniform(
+                (SINGLE_UNIT * 5.0), (SINGLE_UNIT * 15.0)
+            )
+            if s + s_variation > RANGE_CEIL:
+                new_s = normalize_hls(s, s_variation)
+            else:
+                new_s = s + s_variation
 
-            new_l += random.uniform((SINGLE_UNIT * 8.0), (SINGLE_UNIT * 20.0))
+            new_l += random.uniform((SINGLE_UNIT * 7.0), (SINGLE_UNIT * 15.0))
+            # l_variance = random.uniform((SINGLE_UNIT * 4.0), (SINGLE_UNIT * 10.0))
+            # if l + l_variance > RANGE_CEIL:
+            #     new_l = normalize_hls(l, l_variance)
+            # else:
+            #     new_l = l + l_variance
 
             color_palette["h"].append(
                 [int(new_h * 360), int(new_l * 100), int(new_s * 100)]
@@ -201,6 +205,7 @@ def make_comp_color_palette(
     else:
         raise ValueError("Unsupported color format")
 
+# TODO: Check if this helper function is unnecessary! Might no be 👀
 def find_palette_values_for_n_steps(steps: int):
     single_hue_unit = 360.0 / steps
     single_light_sat_unit = 100.0 / steps
@@ -244,7 +249,7 @@ def find_comp_hue(hue: float):
 
 def normalize_hls(val: float, shift: float):
     """
-    Returns the correct color within the bounds of a color wheel 0˚ - 360˚ (0 - 0.9~ in floating number)
+    Returns the correct color within the bounds of a color wheel 0˚ - 360˚ (0 - 1.0 in floating number)
 
     Parameters:
         val (float): val value in HLS format (hue or saturation)

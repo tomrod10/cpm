@@ -3,10 +3,10 @@ from cpm_app.cli_flow.utils import (
     get_color_format,
     get_user_file,
     get_color_scheme,
+    get_palette_steps,
 )
 from cpm_app.utils import (
     get_color_from_img,
-    get_palette_steps,
     make_mono_color_palette,
     make_alog_color_palette,
     make_comp_color_palette,
@@ -16,7 +16,7 @@ from cpm_app.utils import (
 
 def interactive_flow() -> None:
     valid_exts = [".jpg", ".jpeg", ".png"]
-    valid_steps_range = (1, 2)
+    valid_steps_range = (2, 10)
     color_schemes = ["mono", "alog", "comp", "scomp"]
     color_formats = ["r", "h", ""]
 
@@ -32,7 +32,7 @@ def interactive_flow() -> None:
             match color_scheme:
                 case "mono":
                     color_palette = make_mono_color_palette(
-                        main_color, color_format
+                        main_color, color_format, steps
                     )
                 case "alog":
                     color_palette = make_alog_color_palette(
