@@ -55,7 +55,9 @@ def make_mono_color_palette(
     """
     color_palette = {"h": [], "r": []}
     h, l, s = hls
-    shv, slsv = find_palette_values_for_n_steps(steps) # I don't think this is necessary/makes sense
+    shv, slsv = find_palette_values_for_n_steps(
+        steps
+    )  # I don't think this is necessary/makes sense
 
     if format in ("r", "h", "rh"):
         new_h = h
@@ -63,44 +65,37 @@ def make_mono_color_palette(
         new_s = s
 
         for _ in range(steps):
-            h_variation = random.uniform(
-                SINGLE_HUE_UNIT, (SINGLE_HUE_UNIT * 4.0)
-            )
+            h_variation = random.uniform(SINGLE_HUE_UNIT, (SINGLE_HUE_UNIT * 4.0))
             if h + h_variation > RANGE_CEIL:
                 new_h = normalize_hls(h, h_variation)
             else:
                 new_h = h + h_variation
 
-            s_variation = random.uniform(
-                (SINGLE_UNIT * 5.0), (SINGLE_UNIT * 15.0)
-            )
+            s_variation = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 15.0))
             if s + s_variation > RANGE_CEIL:
                 new_s = normalize_hls(s, s_variation)
             else:
                 new_s = s + s_variation
 
             new_l += random.uniform((SINGLE_UNIT * 7.0), (SINGLE_UNIT * 15.0))
+            # TODO: work on randomizing lightness
             # l_variance = random.uniform((SINGLE_UNIT * 4.0), (SINGLE_UNIT * 10.0))
             # if l + l_variance > RANGE_CEIL:
             #     new_l = normalize_hls(l, l_variance)
             # else:
             #     new_l = l + l_variance
 
-            color_palette["h"].append(
-                [int(new_h * 360), int(new_l * 100), int(new_s * 100)]
-            )
+            color_palette["h"].append([int(new_h * 360), int(new_l * 100), int(new_s * 100)])
             # convert back to RGB
             r, g, b = colorsys.hls_to_rgb(new_h, new_l, new_s)
-            color_palette["r"].append(
-                [int(r * 255), int(g * 255), int(b * 255)]
-            )
+            color_palette["r"].append([int(r * 255), int(g * 255), int(b * 255)])
         return color_palette
     else:
         raise ValueError("Unsupported color format")
 
 
 def make_alog_color_palette(
-    hls: Tuple[float, float, float], format: str
+    hls: Tuple[float, float, float], format: str, steps: int
 ) -> ColorPalette:
     """
     Returns a 5-step analogous color palette in HLS and RGB color formats
@@ -114,29 +109,28 @@ def make_alog_color_palette(
     """
     color_palette = {"h": [], "r": []}
     h, l, s = hls
+    variations = [get_close_variation, get_close_variation, get_far_variation, get_far_variation]
+    var_idx = 0
 
     if format in ("r", "h", "rh"):
         new_h = h
         new_l = 0.0
         new_s = s
 
-        for i in range(STEPS):
-            end_variation = random.uniform(
-                (SINGLE_UNIT * 18), (SINGLE_UNIT * 27)
-            )
-            center_variation = random.uniform(
-                (SINGLE_UNIT * 7), (SINGLE_UNIT * 15)
-            )
-            if i == 0:
-                new_h = h - end_variation
-            if i == 1:
-                new_h = h - center_variation
-            if i == 2:
-                new_h = h
-            if i == 3:
-                new_h = h + center_variation
-            if i == 4:
-                new_h = h + end_variation
+        for _ in range(steps):
+            if var_idx == len(variations):
+                var_idx = 0
+            variation = variations[var_idx]()  # we call the funtion
+
+            # double check normalized value!
+            if var_idx % 2 == 0:
+                if h + variation > RANGE_CEIL:
+                    new_h = normalize_hls(h, variation)
+                else:
+                    new_h = h + variation
+            else:
+                new_h = h - variation
+            var_idx += 1
 
             # TODO: This might need some tweaking
             if new_h > RANGE_CEIL:
@@ -144,33 +138,25 @@ def make_alog_color_palette(
             if new_h < 0:
                 new_h += RANGE_CEIL
 
-            if i == 1 or i == 3:
-                variation = random.uniform(
-                    (SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0)
-                )
-                if s + variation > RANGE_CEIL:
-                    new_s = s - variation
-                else:
-                    new_s = s + variation
+            variation = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 20.0))
+            if s + variation > RANGE_CEIL:
+                new_s = s - variation
+            else:
+                new_s = s + variation
 
             new_l += random.uniform((SINGLE_UNIT * 8.0), (SINGLE_UNIT * 20.0))
 
-            color_palette["h"].append(
-                [int(new_h * 360), int(new_l * 100), int(new_s * 100)]
-            )
+            color_palette["h"].append([int(new_h * 360), int(new_l * 100), int(new_s * 100)])
             # convert back to RGB
             r, g, b = colorsys.hls_to_rgb(new_h, new_l, new_s)
-            color_palette["r"].append(
-                [int(r * 255), int(g * 255), int(b * 255)]
-            )
+            color_palette["r"].append([int(r * 255), int(g * 255), int(b * 255)])
         return color_palette
     else:
         raise ValueError("Unsupported color format")
 
+
 # TODO: Add documentation
-def make_comp_color_palette(
-    hls: Tuple[float, float, float], format: str
-) -> ColorPalette:
+def make_comp_color_palette(hls: Tuple[float, float, float], format: str) -> ColorPalette:
     # init
     h, l, s = hls
     color_palette = {"h": [], "r": []}
@@ -205,11 +191,13 @@ def make_comp_color_palette(
     else:
         raise ValueError("Unsupported color format")
 
+
 # TODO: Check if this helper function is unnecessary! Might no be 👀
 def find_palette_values_for_n_steps(steps: int):
     single_hue_unit = 360.0 / steps
     single_light_sat_unit = 100.0 / steps
     return single_hue_unit, single_light_sat_unit
+
 
 def find_adjacent_hue(hue: float):
     """
@@ -254,7 +242,7 @@ def normalize_hls(val: float, shift: float):
     Parameters:
         val (float): val value in HLS format (hue or saturation)
         shift (float): Amount moving in the color wheel
-    
+
     Returns:
         val (float): val value in HLS format
     """
@@ -270,7 +258,7 @@ def find_next_sat(sat: float):
 
     Parameters:
         sat (float): Saturation value in HLS format
-    
+
     Returns:
         new_s (float): Shifted saturation value in HLS format
     """
@@ -279,6 +267,20 @@ def find_next_sat(sat: float):
     if new_s > RANGE_CEIL:
         return normalize_hls(sat, shift)
     return new_s
+
+
+def get_close_variation():
+    """
+    Gets a random offset from a range of values close to the starting hue and returns it
+    """
+    return random.uniform((SINGLE_UNIT * 8), (SINGLE_UNIT * 15))
+
+
+def get_far_variation():
+    """
+    Gets a random offset from a range of values far from the starting hue and returns it
+    """
+    return random.uniform((SINGLE_UNIT * 15), (SINGLE_UNIT * 30))
 
 
 # TODO: Add documentation
