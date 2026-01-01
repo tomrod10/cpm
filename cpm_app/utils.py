@@ -122,21 +122,11 @@ def make_alog_color_palette(
                 var_idx = 0
             variation = variations[var_idx]()  # we call the funtion
 
-            # double check normalized value!
             if var_idx % 2 == 0:
-                if h + variation > RANGE_CEIL:
-                    new_h = normalize_hls(h, variation)
-                else:
-                    new_h = h + variation
+                new_h = normalize_hls(h, variation)
             else:
-                new_h = h - variation
+                new_h = normalize_hls(h, -variation)
             var_idx += 1
-
-            # TODO: This might need some tweaking
-            if new_h > RANGE_CEIL:
-                new_h -= RANGE_CEIL
-            if new_h < 0:
-                new_h += RANGE_CEIL
 
             variation = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 20.0))
             if s + variation > RANGE_CEIL:
@@ -240,16 +230,14 @@ def normalize_hls(val: float, shift: float):
     Returns the correct color within the bounds of a color wheel 0˚ - 360˚ (0 - 1.0 in floating number)
 
     Parameters:
-        val (float): val value in HLS format (hue or saturation)
+        val (float): value in HLS format (hue or saturation)
         shift (float): Amount moving in the color wheel
 
     Returns:
-        val (float): val value in HLS format
+        offset (float): normalized value in HLS format
     """
-    diff = RANGE_CEIL - val
-    shift = abs(shift - diff)
-    val = 0.0 + shift
-    return val
+    offset = (val + shift) % 1.0
+    return offset
 
 
 def find_next_sat(sat: float):
