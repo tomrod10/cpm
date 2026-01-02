@@ -5,11 +5,8 @@ from typing import List, Tuple, Dict
 
 
 # HLS units and range
-# SINGLE_UNIT = 0.00990099  # Equivalent to single unit in the 0 - 100 range for L and S in HLS
 SINGLE_UNIT = 1.0 / 100.0  # Equivalent to single unit in the 0 - 100 range for L and S in HLS
-# SINGLE_HUE_UNIT = 0.0027777777  # Equivalent to single unit in the 0 - 360 range
 SINGLE_HUE_UNIT = 1.0 / 360.0  # Equivalent to single unit in the 0 - 360 range
-# RANGE_CEIL = 0.9999999999999999  # Equivalent to the max value in our number range
 RANGE_CEIL = 100.0 / 100.0  # Equivalent to the max value in our number range
 
 STEPS = 5
@@ -55,9 +52,6 @@ def make_mono_color_palette(
     """
     color_palette = {"h": [], "r": []}
     h, l, s = hls
-    shv, slsv = find_palette_values_for_n_steps(
-        steps
-    )  # I don't think this is necessary/makes sense
 
     if format in ("r", "h", "rh"):
         new_h = h
@@ -77,13 +71,8 @@ def make_mono_color_palette(
             else:
                 new_s = s + s_variation
 
-            new_l += random.uniform((SINGLE_UNIT * 7.0), (SINGLE_UNIT * 15.0))
             # TODO: work on randomizing lightness
-            # l_variance = random.uniform((SINGLE_UNIT * 4.0), (SINGLE_UNIT * 10.0))
-            # if l + l_variance > RANGE_CEIL:
-            #     new_l = normalize_hls(l, l_variance)
-            # else:
-            #     new_l = l + l_variance
+            new_l += random.uniform((SINGLE_UNIT * 7.0), (SINGLE_UNIT * 15.0))
 
             color_palette["h"].append([int(new_h * 360), int(new_l * 100), int(new_s * 100)])
             # convert back to RGB
