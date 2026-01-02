@@ -124,17 +124,13 @@ def make_alog_color_palette(
 
             if var_idx % 2 == 0:
                 new_h = normalize_hls(h, variation)
+                new_s = normalize_hls(s, variation)
             else:
                 new_h = normalize_hls(h, -variation)
+                new_s = normalize_hls(s, -variation)
             var_idx += 1
 
-            variation = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 20.0))
-            if s + variation > RANGE_CEIL:
-                new_s = s - variation
-            else:
-                new_s = s + variation
-
-            new_l += random.uniform((SINGLE_UNIT * 8.0), (SINGLE_UNIT * 20.0))
+            new_l += variation
 
             color_palette["h"].append([int(new_h * 360), int(new_l * 100), int(new_s * 100)])
             # convert back to RGB
@@ -170,7 +166,7 @@ def make_comp_color_palette(hls: Tuple[float, float, float], format: str) -> Col
             new_h = find_adjacent_hue(new_h)
 
             if i in (1, 3):
-                new_s = find_next_sat(s)
+                new_s = find_next_sat(s)  # TODO: Tweak this function
 
             new_l += random.uniform((SINGLE_UNIT * 8.0), (SINGLE_UNIT * 20.0))
             i += 1
@@ -251,9 +247,7 @@ def find_next_sat(sat: float):
         new_s (float): Shifted saturation value in HLS format
     """
     shift = random.uniform((SINGLE_UNIT * 5.0), (SINGLE_UNIT * 25.0))
-    new_s = sat + shift
-    if new_s > RANGE_CEIL:
-        return normalize_hls(sat, shift)
+    new_s = normalize_hls(sat, shift)
     return new_s
 
 

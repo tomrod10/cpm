@@ -31,17 +31,11 @@ def interactive_flow() -> None:
 
             match color_scheme:
                 case "mono":
-                    color_palette = make_mono_color_palette(
-                        main_color, color_format, steps
-                    )
+                    color_palette = make_mono_color_palette(main_color, color_format, steps)
                 case "alog":
-                    color_palette = make_alog_color_palette(
-                        main_color, color_format
-                    )
+                    color_palette = make_alog_color_palette(main_color, color_format, steps)
                 case "comp":
-                    color_palette = make_comp_color_palette(
-                        main_color, color_format
-                    )
+                    color_palette = make_comp_color_palette(main_color, color_format)
                 case _:
                     print("Default case. This feature is still a WIP")
                     raise ValueError("Invalid color scheme. Try again!")
@@ -50,9 +44,7 @@ def interactive_flow() -> None:
                 file_name, color_scheme, color_format, main_color, color_palette, steps
             )
 
-            retry = input(
-                "Would you like to generate another color palette? (y/n): "
-            )
+            retry = input("Would you like to generate another color palette? (y/n): ")
             if retry == "y":
                 continue
             else:
