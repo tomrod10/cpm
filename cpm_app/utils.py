@@ -110,16 +110,24 @@ def make_alog_color_palette(
             if var_idx == len(variations):
                 var_idx = 0
             variation = variations[var_idx]()  # we call the funtion
+            direction = random.choice([0, 1, 2])
 
-            if var_idx % 2 == 0:
+            print(f"\nVariation: {variation}\n")
+            print(f"\n New S: {new_s}\n")
+            print(f"\n New L: {new_l}\n")
+
+            if direction % 2 == 0:
                 new_h = normalize_hls(h, variation)
-                new_s = normalize_hls(s, variation)
             else:
                 new_h = normalize_hls(h, -variation)
-                new_s = normalize_hls(s, -variation)
             var_idx += 1
 
-            new_l += variation
+            if direction % 2 == 0:
+                new_s = normalize_hls(s, get_close_variation())
+            else:
+                new_s = normalize_hls(s, -get_close_variation())
+
+            new_l += random.uniform((SINGLE_UNIT * 7.0), (SINGLE_UNIT * 12.0))
 
             color_palette["h"].append([int(new_h * 360), int(new_l * 100), int(new_s * 100)])
             # convert back to RGB
@@ -237,14 +245,14 @@ def get_close_variation():
     """
     Gets a random offset from a range of values close to the starting hue and returns it
     """
-    return random.uniform((SINGLE_UNIT * 8), (SINGLE_UNIT * 15))
+    return random.uniform((SINGLE_UNIT * 8), (SINGLE_UNIT * 16))
 
 
 def get_far_variation():
     """
     Gets a random offset from a range of values far from the starting hue and returns it
     """
-    return random.uniform((SINGLE_UNIT * 15), (SINGLE_UNIT * 30))
+    return random.uniform((SINGLE_UNIT * 14), (SINGLE_UNIT * 20))
 
 
 # TODO: Add documentation
