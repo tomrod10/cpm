@@ -167,13 +167,6 @@ def make_comp_color_palette(hls: Tuple[float, float, float], format: str) -> Col
         raise ValueError("Unsupported color format")
 
 
-# TODO: Check if this helper function is unnecessary! Might no be 👀
-def find_palette_values_for_n_steps(steps: int):
-    single_hue_unit = 360.0 / steps
-    single_light_sat_unit = 100.0 / steps
-    return single_hue_unit, single_light_sat_unit
-
-
 def find_adjacent_hue(hue: float):
     """
     Calculates the degree shift in the color wheel as a floating number and applies it to the passed hue
